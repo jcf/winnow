@@ -1,0 +1,132 @@
+#+title: Contributing to Winnow
+#+author: James Conroy-Finn
+#+startup: content
+
+* Getting Started
+
+#+begin_src sh
+git clone https://github.com/invetica/winnow
+cd winnow
+direnv allow  # or: source .envrc
+just test
+#+end_src
+
+* Development Workflow
+
+** Running Tests
+
+#+begin_src sh
+just test              # All tests
+just test --fail-fast  # Stop on first failure
+just lint              # clj-kondo
+just conform           # Node.js conformance tests
+#+end_src
+
+** Adding Support for New Tailwind Classes
+
+1. Identify the class type:
+   - *Exact match*: Classes like =block=, =hidden=, =flex-1=
+   - *Prefix pattern*: Classes like =p-4=, =bg-red-500=, =translate-x-2=
+
+2. Edit =src/winnow/config.clj=:
+   #+begin_src clojure
+   ;; For exact matches, add to :exact map
+   :exact
+   {"new-class" :group-name
+    ...}
+
+   ;; For prefix patterns, add to :prefixes map
+   :prefixes
+   {"new-prefix" {:group :group-name}
+    ...}
+   #+end_src
+
+3. Add conflict relationships if needed:
+   #+begin_src clojure
+   :conflicts
+   {:group-name [:conflicting-group-1 :conflicting-group-2]
+    ...}
+   #+end_src
+
+4. Add conformance tests to =spec/winnow.txt=:
+   #+begin_src text
+   new-class-a new-class-b
+   => new-class-b
+   #+end_src
+
+5. Verify and regenerate docs:
+   #+begin_src sh
+   just test
+   just docs
+   #+end_src
+
+* Code Style
+
+- No comments explaining code; use git history for context
+- No docstrings unless they add significant value
+- Sort map keys and set values alphabetically
+- Align values in associative structures
+- Use =;;;= section headers to separate logical groups
+- Prefer data > functions > macros
+
+* Testing Philosophy
+
+** Conformance Tests
+
+The =spec/winnow.txt= file contains test cases in a simple format:
+
+#+begin_src text
+input-classes
+=> expected-output
+
+# Comments start with #
+px-2 px-4
+=> px-4
+
+# Multiple inputs separated by |
+a b | c d
+=> merged-result
+#+end_src
+
+These tests ensure compatibility with tailwind-merge behavior.
+
+** Property-Based Tests
+
+We use =clojure.test.check= to verify invariants that must hold for all inputs:
+
+- *Idempotence*: Resolving twice equals resolving once
+- *Subset*: Output classes are always a subset of input
+- *Modifier independence*: Different modifiers don't conflict
+- *Symmetry*: Conflict relationships work in both directions
+
+Add new properties to =test/winnow/generative_test.clj= when you discover
+invariants that should always hold.
+
+* Pull Request Guidelines
+
+1. Run =just lint && just test= before submitting
+2. Add conformance tests for new features
+3. Update =doc/supported-classes.org= via =just docs=
+4. Keep commits atomic and well-described
+5. No TODOs or FIXMEs in submitted code
+
+* Architecture Overview
+
+#+begin_src text
+winnow.api          Public API (resolve, make-resolver)
+    │
+    ├── winnow.parse      Parse class strings into components
+    │
+    ├── winnow.classify   Map parsed classes to conflict groups
+    │   │
+    │   └── winnow.trie   O(n) prefix matching
+    │
+    └── winnow.config     All Tailwind utilities and conflicts
+#+end_src
+
+* Building
+
+#+begin_src sh
+clojure -T:build jar      # Build JAR
+clojure -T:build install  # Install to local Maven repo
+#+end_src

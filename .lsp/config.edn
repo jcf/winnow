@@ -1,0 +1,9 @@
+{;; Prefer clj-refactor for adding namespaces as it sets up clojure.test
+ ;; automatically.
+ :auto-add-ns-to-new-files? false
+ :cljfmt-config-path        ".cljfmt.edn"
+ :copy-kondo-configs?       true
+ :diagnostics               {:range-type :simple}
+ :hover                     {:arity-on-same-line? true
+                             :clojuredocs         true
+                             :hide-file-location? true}}

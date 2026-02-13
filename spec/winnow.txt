@@ -1,0 +1,1222 @@
+# Winnow Conformance Spec
+# ======================
+# Format:
+#   - Lines starting with # are comments
+#   - Non-#, non-blank, non-=> lines are input classes
+#   - Multiple input strings separated by " | "
+#   - => lines are expected output
+#   - Blank lines separate test cases visually
+#
+# Compatibility:
+#   Based on tailwind-merge v3.x with corrections from main branch.
+#   Three font-weight/family-name disambiguation cases (lines 347, 355, 379)
+#   reflect upcoming fixes not yet in v3.4.0. See:
+#   https://github.com/dcastil/tailwind-merge/commits/main/tests/arbitrary-values.test.ts
+
+# ==============================================================================
+# Core merge functionality (tw-merge.test.ts)
+# ==============================================================================
+
+# Mix blend modes
+mix-blend-normal mix-blend-multiply
+=> mix-blend-multiply
+
+# Height utilities
+h-10 h-min
+=> h-min
+
+# Stroke width vs stroke color (no conflict)
+stroke-black stroke-1
+=> stroke-black stroke-1
+
+# Stroke width conflicts
+stroke-2 stroke-[3]
+=> stroke-[3]
+
+# Outline width vs color (no conflict)
+outline-black outline-1
+=> outline-black outline-1
+
+# Grayscale filter
+grayscale-0 grayscale-[50%]
+=> grayscale-[50%]
+
+# Flex grow
+grow grow-[2]
+=> grow-[2]
+
+# ==============================================================================
+# Class group conflicts (class-group-conflicts.test.ts)
+# ==============================================================================
+
+# Basic same-group conflict
+overflow-x-auto overflow-x-hidden
+=> overflow-x-hidden
+
+# Basis utilities
+basis-full basis-auto
+=> basis-auto
+
+# Width utilities
+w-full w-fit
+=> w-fit
+
+# Multiple same-group values
+overflow-x-auto overflow-x-hidden overflow-x-scroll
+=> overflow-x-scroll
+
+# Modifier creates separate group
+overflow-x-auto hover:overflow-x-hidden overflow-x-scroll
+=> hover:overflow-x-hidden overflow-x-scroll
+
+# Complex modifier sorting
+overflow-x-auto hover:overflow-x-hidden hover:overflow-x-auto overflow-x-scroll
+=> hover:overflow-x-auto overflow-x-scroll
+
+# Column span
+col-span-1 col-span-full
+=> col-span-full
+
+# Multiple groups in one merge
+gap-2 gap-px basis-px basis-3
+=> gap-px basis-3
+
+# ==============================================================================
+# Font variant numeric (class-group-conflicts.test.ts)
+# ==============================================================================
+
+# Font variant numeric don't conflict with each other
+lining-nums tabular-nums diagonal-fractions
+=> lining-nums tabular-nums diagonal-fractions
+
+# normal-nums resets other numeric variants
+normal-nums tabular-nums diagonal-fractions
+=> tabular-nums diagonal-fractions
+
+# normal-nums at the end resets all
+tabular-nums diagonal-fractions normal-nums
+=> normal-nums
+
+# Tabular vs proportional (same subgroup)
+tabular-nums proportional-nums
+=> proportional-nums
+
+# ==============================================================================
+# Conflicts across class groups (conflicts-across-class-groups.test.ts)
+# ==============================================================================
+
+# Inset and inset-x don't conflict in this order
+inset-1 inset-x-1
+=> inset-1 inset-x-1
+
+# inset-x then inset = inset wins (more specific first is overridden)
+inset-x-1 inset-1
+=> inset-1
+
+# Multiple specificity levels
+inset-x-1 left-1 inset-1
+=> inset-1
+
+# inset overrides inset-x but left survives
+inset-x-1 inset-1 left-1
+=> inset-1 left-1
+
+# inset overrides both inset-x and right
+inset-x-1 right-1 inset-1
+=> inset-1
+
+# Same specificity level (inset-x twice)
+inset-x-1 right-1 inset-x-1
+=> inset-x-1
+
+# Different axes don't conflict
+inset-x-1 right-1 inset-y-1
+=> inset-x-1 right-1 inset-y-1
+
+# Transitivity of conflicts
+right-1 inset-x-1 inset-y-1
+=> inset-x-1 inset-y-1
+
+# Modifier breaks conflict group
+inset-x-1 hover:left-1 inset-1
+=> hover:left-1 inset-1
+
+# ==============================================================================
+# Ring and shadow (conflicts-across-class-groups.test.ts)
+# ==============================================================================
+
+# Ring and shadow don't conflict
+ring shadow
+=> ring shadow
+
+# Ring-2 and shadow-md don't conflict
+ring-2 shadow-md
+=> ring-2 shadow-md
+
+# Order doesn't matter for non-conflicts
+shadow ring
+=> shadow ring
+
+# Another order test
+shadow-md ring-2
+=> shadow-md ring-2
+
+# ==============================================================================
+# Touch action classes (conflicts-across-class-groups.test.ts)
+# ==============================================================================
+
+# Touch pan direction conflict
+touch-pan-x touch-pan-right
+=> touch-pan-right
+
+# touch-none vs touch-pan
+touch-none touch-pan-x
+=> touch-pan-x
+
+# touch-pan vs touch-none
+touch-pan-x touch-none
+=> touch-none
+
+# Multiple touch actions don't conflict
+touch-pan-x touch-pan-y touch-pinch-zoom
+=> touch-pan-x touch-pan-y touch-pinch-zoom
+
+# touch-manipulation overridden by specific touches
+touch-manipulation touch-pan-x touch-pan-y touch-pinch-zoom
+=> touch-pan-x touch-pan-y touch-pinch-zoom
+
+# touch-auto resets all
+touch-pan-x touch-pan-y touch-pinch-zoom touch-auto
+=> touch-auto
+
+# ==============================================================================
+# Line clamp (conflicts-across-class-groups.test.ts)
+# ==============================================================================
+
+# line-clamp sets overflow and display implicitly
+overflow-auto inline line-clamp-1
+=> line-clamp-1
+
+# When line-clamp is first, later utilities override its implicit values
+line-clamp-1 overflow-auto inline
+=> line-clamp-1 overflow-auto inline
+
+# ==============================================================================
+# Arbitrary values (arbitrary-values.test.ts)
+# ==============================================================================
+
+# Simple arbitrary value conflict
+m-[2px] m-[10px]
+=> m-[10px]
+
+# Multiple arbitrary length units
+m-[2px] m-[11svmin] m-[12in] m-[13lvi] m-[14vb] m-[15vmax] m-[16mm] m-[17%] m-[18em] m-[19px] m-[10dvh]
+=> m-[10dvh]
+
+# Container query units
+h-[10px] h-[11cqw] h-[12cqh] h-[13cqi] h-[14cqb] h-[15cqmin] h-[16cqmax]
+=> h-[16cqmax]
+
+# Named vs arbitrary z-index
+z-20 z-[99]
+=> z-[99]
+
+# Arbitrary shorthand overrides specific
+my-[2px] m-[10rem]
+=> m-[10rem]
+
+# Arbitrary cursor value
+cursor-pointer cursor-[grab]
+=> cursor-[grab]
+
+# Calc expressions in arbitrary values
+m-[2px] m-[calc(100%-var(--arbitrary))]
+=> m-[calc(100%-var(--arbitrary))]
+
+# Type-labeled arbitrary values
+m-[2px] m-[length:var(--mystery-var)]
+=> m-[length:var(--mystery-var)]
+
+# Opacity with arbitrary decimal
+opacity-10 opacity-[0.025]
+=> opacity-[0.025]
+
+# Scale with arbitrary value
+scale-75 scale-[1.7]
+=> scale-[1.7]
+
+# Brightness filter
+brightness-90 brightness-[1.75]
+=> brightness-[1.75]
+
+# Zero value handling
+min-h-[0.5px] min-h-[0]
+=> min-h-[0]
+
+# Different types with zero don't conflict
+text-[0.5px] text-[color:0]
+=> text-[0.5px] text-[color:0]
+
+# Custom property doesn't conflict with size
+text-[0.5px] text-(--my-0)
+=> text-[0.5px] text-(--my-0)
+
+# ==============================================================================
+# Arbitrary values with modifiers (arbitrary-values.test.ts)
+# ==============================================================================
+
+# Hover modifier with type label
+hover:m-[2px] hover:m-[length:var(--c)]
+=> hover:m-[length:var(--c)]
+
+# Multiple modifiers sorted
+hover:focus:m-[2px] focus:hover:m-[length:var(--c)]
+=> focus:hover:m-[length:var(--c)]
+
+# Border width and color don't conflict
+border-b border-[color:rgb(var(--color-gray-500-rgb)/50%))]
+=> border-b border-[color:rgb(var(--color-gray-500-rgb)/50%))]
+
+# Order doesn't matter
+border-[color:rgb(var(--color-gray-500-rgb)/50%))] border-b
+=> border-[color:rgb(var(--color-gray-500-rgb)/50%))] border-b
+
+# Named color overrides arbitrary color
+border-b border-[color:rgb(var(--color-gray-500-rgb)/50%))] border-some-coloooor
+=> border-b border-some-coloooor
+
+# ==============================================================================
+# Complex arbitrary values (arbitrary-values.test.ts)
+# ==============================================================================
+
+# Grid rows arbitrary vs named
+grid-rows-[1fr,auto] grid-rows-2
+=> grid-rows-2
+
+# Complex grid template
+grid-rows-[repeat(20,minmax(0,1fr))] grid-rows-3
+=> grid-rows-3
+
+# ==============================================================================
+# Ambiguous arbitrary values (arbitrary-values.test.ts)
+# ==============================================================================
+
+# Theme function in calc
+mt-2 mt-[calc(theme(fontSize.4xl)/1.125)]
+=> mt-[calc(theme(fontSize.4xl)/1.125)]
+
+# Multi-value padding arbitrary
+p-2 p-[calc(theme(fontSize.4xl)/1.125)_10px]
+=> p-[calc(theme(fontSize.4xl)/1.125)_10px]
+
+# Type-labeled theme reference
+mt-2 mt-[length:theme(someScale.someValue)]
+=> mt-[length:theme(someScale.someValue)]
+
+# Theme reference without type
+mt-2 mt-[theme(someScale.someValue)]
+=> mt-[theme(someScale.someValue)]
+
+# Text size with type label
+text-2xl text-[length:theme(someScale.someValue)]
+=> text-[length:theme(someScale.someValue)]
+
+# Calc with theme in text
+text-2xl text-[calc(theme(fontSize.4xl)/1.125)]
+=> text-[calc(theme(fontSize.4xl)/1.125)]
+
+# Background type disambiguation
+bg-cover bg-[percentage:30%] bg-[size:200px_100px] bg-[length:200px_100px]
+=> bg-[percentage:30%] bg-[length:200px_100px]
+
+# Background image types
+bg-none bg-[url(.)] bg-[image:.] bg-[url:.] bg-[linear-gradient(.)] bg-linear-to-r
+=> bg-linear-to-r
+
+# Color mix in border
+border-[color-mix(in_oklab,var(--background),var(--calendar-color)_30%)] border
+=> border-[color-mix(in_oklab,var(--background),var(--calendar-color)_30%)] border
+
+# Font weight arbitrary numeric
+font-[400] font-[600]
+=> font-[600]
+
+# Font with CSS variables
+font-[var(--a)] font-[var(--b)]
+=> font-[var(--b)]
+
+# Type-labeled font weight vs unlabeled
+font-[weight:var(--a)] font-[var(--b)]
+=> font-[var(--b)]
+
+# Numeric to labeled conversion
+font-[400] font-[weight:var(--b)]
+=> font-[weight:var(--b)]
+
+# Same type labels
+font-[weight:var(--a)] font-[weight:var(--b)]
+=> font-[weight:var(--b)]
+
+# Different font properties don't conflict
+font-[family-name:var(--a)] font-[var(--b)]
+=> font-[family-name:var(--a)] font-[var(--b)]
+
+# ==============================================================================
+# Arbitrary custom properties (arbitrary-values.test.ts)
+# ==============================================================================
+
+# Custom property background
+bg-red bg-(--other-red) bg-bottom bg-(position:-my-pos)
+=> bg-(--other-red) bg-(position:-my-pos)
+
+# Shadow custom properties
+shadow-xs shadow-(shadow:--something) shadow-red shadow-(--some-other-shadow) shadow-(color:--some-color)
+=> shadow-(--some-other-shadow) shadow-(color:--some-color)
+
+# Font custom properties
+font-(--a) font-(--b)
+=> font-(--b)
+
+# Labeled custom property override
+font-(weight:--a) font-(--b)
+=> font-(--b)
+
+# Different property types don't conflict
+font-(family-name:--a) font-(--b)
+=> font-(family-name:--a) font-(--b)
+
+# ==============================================================================
+# Arbitrary properties (arbitrary-properties.test.ts)
+# ==============================================================================
+
+# Same property conflicts
+[paint-order:markers] [paint-order:normal]
+=> [paint-order:normal]
+
+# Multiple arbitrary properties
+[paint-order:markers] [--my-var:2rem] [paint-order:normal] [--my-var:4px]
+=> [paint-order:normal] [--my-var:4px]
+
+# ==============================================================================
+# Arbitrary properties with modifiers (arbitrary-properties.test.ts)
+# ==============================================================================
+
+# Different modifiers don't conflict
+[paint-order:markers] hover:[paint-order:normal]
+=> [paint-order:markers] hover:[paint-order:normal]
+
+# Same modifiers conflict
+hover:[paint-order:markers] hover:[paint-order:normal]
+=> hover:[paint-order:normal]
+
+# Sorted modifiers are equivalent
+hover:focus:[paint-order:markers] focus:hover:[paint-order:normal]
+=> focus:hover:[paint-order:normal]
+
+# Mixed arbitrary properties
+[paint-order:markers] [paint-order:normal] [--my-var:2rem] lg:[--my-var:4px]
+=> [paint-order:normal] [--my-var:2rem] lg:[--my-var:4px]
+
+# Background with radial gradient arbitrary
+bg-[#B91C1C] bg-radial-[at_50%_75%] bg-radial-[at_25%_25%]
+=> bg-[#B91C1C] bg-radial-[at_25%_25%]
+
+# ==============================================================================
+# Complex arbitrary properties (arbitrary-properties.test.ts)
+# ==============================================================================
+
+# Arbitrary properties with special characters
+[-unknown-prop:::123:::] [-unknown-prop:url(https://hi.com)]
+=> [-unknown-prop:url(https://hi.com)]
+
+# ==============================================================================
+# Important modifier with arbitrary properties (arbitrary-properties.test.ts)
+# ==============================================================================
+
+# Important keeps different properties separate
+![some:prop] [some:other]
+=> ![some:prop] [some:other]
+
+# Important overrides non-important of same property
+![some:prop] [some:other] [some:one] ![some:another]
+=> [some:one] ![some:another]
+
+# ==============================================================================
+# Basic arbitrary variants (arbitrary-variants.test.ts)
+# ==============================================================================
+
+# Simple arbitrary variant
+[p]:underline [p]:line-through
+=> [p]:line-through
+
+# Selector arbitrary variant
+[&>*]:underline [&>*]:line-through
+=> [&>*]:line-through
+
+# Different selectors don't conflict
+[&>*]:underline [&>*]:line-through [&_div]:line-through
+=> [&>*]:line-through [&_div]:line-through
+
+# Supports arbitrary variant
+supports-[display:grid]:flex supports-[display:grid]:grid
+=> supports-[display:grid]:grid
+
+# ==============================================================================
+# Arbitrary variants with modifiers (arbitrary-variants.test.ts)
+# ==============================================================================
+
+# Multiple standard modifiers with arbitrary variant
+dark:lg:hover:[&>*]:underline dark:lg:hover:[&>*]:line-through
+=> dark:lg:hover:[&>*]:line-through
+
+# Modifier order sorting
+dark:lg:hover:[&>*]:underline dark:hover:lg:[&>*]:line-through
+=> dark:hover:lg:[&>*]:line-through
+
+# Position of arbitrary variant matters
+hover:[&>*]:underline [&>*]:hover:line-through
+=> hover:[&>*]:underline [&>*]:hover:line-through
+
+# Complex position-sensitive modifiers
+hover:dark:[&>*]:underline dark:hover:[&>*]:underline dark:[&>*]:hover:line-through
+=> dark:hover:[&>*]:underline dark:[&>*]:hover:line-through
+
+# ==============================================================================
+# Complex arbitrary variants (arbitrary-variants.test.ts)
+# ==============================================================================
+
+# Nested media queries
+[@media_screen{@media(hover:hover)}]:underline [@media_screen{@media(hover:hover)}]:line-through
+=> [@media_screen{@media(hover:hover)}]:line-through
+
+# Nested media with modifiers
+hover:[@media_screen{@media(hover:hover)}]:underline hover:[@media_screen{@media(hover:hover)}]:line-through
+=> hover:[@media_screen{@media(hover:hover)}]:line-through
+
+# Attribute selectors
+[&[data-open]]:underline [&[data-open]]:line-through
+=> [&[data-open]]:line-through
+
+# Multiple attribute selectors
+[&[data-foo][data-bar]:not([data-baz])]:underline [&[data-foo][data-bar]:not([data-baz])]:line-through
+=> [&[data-foo][data-bar]:not([data-baz])]:line-through
+
+# ==============================================================================
+# Multiple arbitrary variants (arbitrary-variants.test.ts)
+# ==============================================================================
+
+# Nested arbitrary variants
+[&>*]:[&_div]:underline [&>*]:[&_div]:line-through
+=> [&>*]:[&_div]:line-through
+
+# Order of arbitrary variants matters
+[&>*]:[&_div]:underline [&_div]:[&>*]:line-through
+=> [&>*]:[&_div]:underline [&_div]:[&>*]:line-through
+
+# Complex modifier sorting with multiple arbitrary variants
+hover:dark:[&>*]:focus:disabled:[&_div]:underline dark:hover:[&>*]:disabled:focus:[&_div]:line-through
+=> dark:hover:[&>*]:disabled:focus:[&_div]:line-through
+
+# Different modifier order patterns
+hover:dark:[&>*]:focus:[&_div]:disabled:underline dark:hover:[&>*]:disabled:focus:[&_div]:line-through
+=> hover:dark:[&>*]:focus:[&_div]:disabled:underline dark:hover:[&>*]:disabled:focus:[&_div]:line-through
+
+# ==============================================================================
+# Arbitrary variants with arbitrary properties (arbitrary-variants.test.ts)
+# ==============================================================================
+
+# Arbitrary property under arbitrary variant
+[&>*]:[color:red] [&>*]:[color:blue]
+=> [&>*]:[color:blue]
+
+# Complex selector with arbitrary property
+[&[data-foo][data-bar]:not([data-baz])]:nod:noa:[color:red] [&[data-foo][data-bar]:not([data-baz])]:noa:nod:[color:blue]
+=> [&[data-foo][data-bar]:not([data-baz])]:noa:nod:[color:blue]
+
+# ==============================================================================
+# Modifiers (modifiers.test.ts)
+# ==============================================================================
+
+# Basic prefix modifier conflict
+hover:block hover:inline
+=> hover:inline
+
+# Different modifiers don't conflict
+hover:block hover:focus:inline
+=> hover:block hover:focus:inline
+
+# Modifier sorting resolves conflict
+hover:block hover:focus:inline focus:hover:inline
+=> hover:block focus:hover:inline
+
+# Focus-within modifier
+focus-within:inline focus-within:block
+=> focus-within:block
+
+# ==============================================================================
+# Postfix modifiers (modifiers.test.ts)
+# ==============================================================================
+
+# Line-height postfix modifier
+text-lg/7 text-lg/8
+=> text-lg/8
+
+# Line-height postfix doesn't conflict with leading
+text-lg/none leading-9
+=> text-lg/none leading-9
+
+# Leading then line-height postfix
+leading-9 text-lg/none
+=> text-lg/none
+
+# Fractional width
+w-full w-1/2
+=> w-1/2
+
+# ==============================================================================
+# Modifier sorting (modifiers.test.ts)
+# ==============================================================================
+
+# Alphabetical modifier sorting
+c:d:e:block d:c:e:inline
+=> d:c:e:inline
+
+# Universal selector with pseudo
+*:before:block *:before:inline
+=> *:before:inline
+
+# Order of * and before matters
+*:before:block before:*:inline
+=> *:before:block before:*:inline
+
+# Complex sorting with universal selector
+x:y:*:z:block y:x:*:z:inline
+=> y:x:*:z:inline
+
+# ==============================================================================
+# Important modifier (important-modifier.test.ts)
+# ==============================================================================
+
+# Important modifier postfix (v4 syntax)
+font-medium! font-bold!
+=> font-bold!
+
+# Important with non-important
+font-medium! font-bold! font-thin
+=> font-bold! font-thin
+
+# Important with negative value
+right-2! -inset-x-px!
+=> -inset-x-px!
+
+# Important with focus modifier
+focus:inline! focus:block!
+=> focus:block!
+
+# Important with arbitrary property
+[--my-var:20px]! [--my-var:30px]!
+=> [--my-var:30px]!
+
+# Mixed v3 and v4 important syntax
+font-medium! !font-bold
+=> !font-bold
+
+# v3 important prefix syntax
+!font-medium !font-bold
+=> !font-bold
+
+# v3 important with non-important
+!font-medium !font-bold font-thin
+=> !font-bold font-thin
+
+# v3 important with negative
+!right-2 !-inset-x-px
+=> !-inset-x-px
+
+# v3 important with modifier
+focus:!inline focus:!block
+=> focus:!block
+
+# v3 important with arbitrary property
+![--my-var:20px] ![--my-var:30px]
+=> ![--my-var:30px]
+
+# ==============================================================================
+# Negative values (negative-values.test.ts)
+# ==============================================================================
+
+# Negative value conflicts
+-m-2 -m-5
+=> -m-5
+
+# Large negative values
+-top-12 -top-2000
+=> -top-2000
+
+# ==============================================================================
+# Positive and negative conflicts (negative-values.test.ts)
+# ==============================================================================
+
+# Negative to positive
+-m-2 m-auto
+=> m-auto
+
+# Positive to negative
+top-12 -top-69
+=> -top-69
+
+# ==============================================================================
+# Cross-group negative conflicts (negative-values.test.ts)
+# ==============================================================================
+
+# Negative specific overridden by positive general
+-right-1 inset-x-1
+=> inset-x-1
+
+# Complex modifier sorting with negatives
+hover:focus:-right-1 focus:hover:inset-x-1
+=> focus:hover:inset-x-1
+
+# ==============================================================================
+# Colors (colors.test.ts)
+# ==============================================================================
+
+# Color name conflicts
+bg-grey-5 bg-hotpink
+=> bg-hotpink
+
+# Colors with modifiers
+hover:bg-grey-5 hover:bg-hotpink
+=> hover:bg-hotpink
+
+# Stroke color vs stroke width (different groups)
+stroke-[hsl(350_80%_0%)] stroke-[10px]
+=> stroke-[hsl(350_80%_0%)] stroke-[10px]
+
+# ==============================================================================
+# Pseudo variants (pseudo-variants.test.ts)
+# ==============================================================================
+
+# Empty pseudo variant
+empty:p-2 empty:p-3
+=> empty:p-3
+
+# Nested pseudo variants
+hover:empty:p-2 hover:empty:p-3
+=> hover:empty:p-3
+
+# Read-only pseudo variant
+read-only:p-2 read-only:p-3
+=> read-only:p-3
+
+# ==============================================================================
+# Pseudo variant groups (pseudo-variants.test.ts)
+# ==============================================================================
+
+# Group-empty variant
+group-empty:p-2 group-empty:p-3
+=> group-empty:p-3
+
+# Peer-empty variant
+peer-empty:p-2 peer-empty:p-3
+=> peer-empty:p-3
+
+# Group and peer don't conflict
+group-empty:p-2 peer-empty:p-3
+=> group-empty:p-2 peer-empty:p-3
+
+# Group with hover
+hover:group-empty:p-2 hover:group-empty:p-3
+=> hover:group-empty:p-3
+
+# Group-read-only variant
+group-read-only:p-2 group-read-only:p-3
+=> group-read-only:p-3
+
+# ==============================================================================
+# Per-side border colors (per-side-border-colors.test.ts)
+# ==============================================================================
+
+# Same side color conflict
+border-t-some-blue border-t-other-blue
+=> border-t-other-blue
+
+# Side overridden by all
+border-t-some-blue border-some-blue
+=> border-some-blue
+
+# All doesn't override later side
+border-some-blue border-s-some-blue
+=> border-some-blue border-s-some-blue
+
+# End side overridden by all
+border-e-some-blue border-some-blue
+=> border-some-blue
+
+# ==============================================================================
+# Content utilities (content-utilities.test.ts)
+# ==============================================================================
+
+# Content arbitrary values
+content-['hello'] content-[attr(data-content)]
+=> content-[attr(data-content)]
+
+# ==============================================================================
+# Standalone classes (standalone-classes.test.ts)
+# ==============================================================================
+
+# Display utilities
+inline block
+=> block
+
+# Display with modifier
+hover:block hover:inline
+=> hover:inline
+
+# Duplicate classes
+hover:block hover:block
+=> hover:block
+
+# Complex display with modifiers
+inline hover:inline focus:inline hover:block hover:focus:block
+=> inline focus:inline hover:block hover:focus:block
+
+# Text decoration
+underline line-through
+=> line-through
+
+# No-underline overrides line-through
+line-through no-underline
+=> no-underline
+
+# ==============================================================================
+# Non-tailwind classes (non-tailwind-classes.test.ts)
+# ==============================================================================
+
+# Non-tailwind class preserved
+non-tailwind-class inline block
+=> non-tailwind-class block
+
+# Similar but non-matching class preserved
+inline block inline-1
+=> block inline-1
+
+# Prefix that doesn't match
+inline block i-inline
+=> block i-inline
+
+# Non-tailwind with modifiers
+focus:inline focus:block focus:inline-1
+=> focus:block focus:inline-1
+
+# ==============================================================================
+# Non-conflicting classes (non-conflicting-classes.test.ts)
+# ==============================================================================
+
+# Border width and color don't conflict
+border-t border-white/10
+=> border-t border-white/10
+
+# Border width and solid color
+border-t border-white
+=> border-t border-white
+
+# Font size and color
+text-3.5xl text-black
+=> text-3.5xl text-black
+
+# ==============================================================================
+# Tailwind CSS v3.3 features (tailwind-css-versions.test.ts)
+# ==============================================================================
+
+# Line-height modifier
+text-red text-lg/7 text-lg/8
+=> text-red text-lg/8
+
+# Logical properties
+start-0 start-1 | end-0 end-1 | ps-0 ps-1 pe-0 pe-1 | ms-0 ms-1 me-0 me-1 | rounded-s-sm rounded-s-md rounded-e-sm rounded-e-md | rounded-ss-sm rounded-ss-md rounded-ee-sm rounded-ee-md
+=> start-1 end-1 ps-1 pe-1 ms-1 me-1 rounded-s-md rounded-e-md rounded-ss-md rounded-ee-md
+
+# Logical property overrides
+start-0 end-0 inset-0 ps-0 pe-0 p-0 ms-0 me-0 m-0 rounded-ss rounded-es rounded-s
+=> inset-0 p-0 m-0 rounded-s
+
+# Hyphens
+hyphens-auto hyphens-manual
+=> hyphens-manual
+
+# Gradient positions
+from-0% from-10% from-[12.5%] via-0% via-10% via-[12.5%] to-0% to-10% to-[12.5%]
+=> from-[12.5%] via-[12.5%] to-[12.5%]
+
+# Gradient position vs color
+from-0% from-red
+=> from-0% from-red
+
+# List image
+list-image-none list-image-[url(./my-image.png)] list-image-[var(--value)]
+=> list-image-[var(--value)]
+
+# Caption
+caption-top caption-bottom
+=> caption-bottom
+
+# Line clamp
+line-clamp-2 line-clamp-none line-clamp-[10]
+=> line-clamp-[10]
+
+# Delay and duration
+delay-150 delay-0 duration-150 duration-0
+=> delay-0 duration-0
+
+# Justify
+justify-normal justify-center justify-stretch
+=> justify-stretch
+
+# Align content
+content-normal content-center content-stretch
+=> content-stretch
+
+# Whitespace
+whitespace-nowrap whitespace-break-spaces
+=> whitespace-break-spaces
+
+# ==============================================================================
+# Tailwind CSS v3.4 features (tailwind-css-versions.test.ts)
+# ==============================================================================
+
+# Viewport units
+h-svh h-dvh w-svw w-dvw
+=> h-dvh w-dvw
+
+# Has variant
+has-[[data-potato]]:p-1 has-[[data-potato]]:p-2 group-has-[:checked]:grid group-has-[:checked]:flex
+=> has-[[data-potato]]:p-2 group-has-[:checked]:flex
+
+# Text wrap
+text-wrap text-pretty
+=> text-pretty
+
+# Size utility
+w-5 h-3 size-10 w-12
+=> size-10 w-12
+
+# Grid subgrid
+grid-cols-2 grid-cols-subgrid grid-rows-5 grid-rows-subgrid
+=> grid-cols-subgrid grid-rows-subgrid
+
+# Min/max width
+min-w-0 min-w-50 min-w-px max-w-0 max-w-50 max-w-px
+=> min-w-px max-w-px
+
+# Forced color adjust
+forced-color-adjust-none forced-color-adjust-auto
+=> forced-color-adjust-auto
+
+# Appearance
+appearance-none appearance-auto
+=> appearance-auto
+
+# Float and clear logical
+float-start float-end clear-start clear-end
+=> float-end clear-end
+
+# Universal selector variant
+*:p-10 *:p-20 hover:*:p-10 hover:*:p-20
+=> *:p-20 hover:*:p-20
+
+# ==============================================================================
+# Tailwind CSS v4.0 features (tailwind-css-versions.test.ts)
+# ==============================================================================
+
+# Transform 3D
+transform-3d transform-flat
+=> transform-flat
+
+# Rotate axes
+rotate-12 rotate-x-2 rotate-none rotate-y-3
+=> rotate-x-2 rotate-none rotate-y-3
+
+# Perspective
+perspective-dramatic perspective-none perspective-midrange
+=> perspective-midrange
+
+# Perspective origin
+perspective-origin-center perspective-origin-top-left
+=> perspective-origin-top-left
+
+# Linear gradient direction
+bg-linear-to-r bg-linear-45
+=> bg-linear-45
+
+# Gradient types
+bg-linear-to-r bg-radial-[something] bg-conic-10
+=> bg-conic-10
+
+# Inset ring
+ring-4 ring-orange inset-ring inset-ring-3 inset-ring-blue
+=> ring-4 ring-orange inset-ring-3 inset-ring-blue
+
+# Field sizing
+field-sizing-content field-sizing-fixed
+=> field-sizing-fixed
+
+# Color scheme
+scheme-normal scheme-dark
+=> scheme-dark
+
+# Font stretch
+font-stretch-expanded font-stretch-[66.66%] font-stretch-50%
+=> font-stretch-50%
+
+# Grid col/row shorthand
+col-span-full col-2 row-span-3 row-4
+=> col-2 row-4
+
+# Via with custom property
+via-red-500 via-(--mobile-header-gradient)
+=> via-(--mobile-header-gradient)
+
+# Via with type-labeled custom property
+via-red-500 via-(length:--mobile-header-gradient)
+=> via-red-500 via-(length:--mobile-header-gradient)
+
+# ==============================================================================
+# Tailwind CSS v4.1 features (tailwind-css-versions.test.ts)
+# ==============================================================================
+
+# Baseline alignment
+items-baseline items-baseline-last
+=> items-baseline-last
+
+# Self baseline
+self-baseline self-baseline-last
+=> self-baseline-last
+
+# Safe alignment
+place-content-center place-content-end-safe place-content-center-safe
+=> place-content-center-safe
+
+# Items safe alignment
+items-center-safe items-baseline items-end-safe
+=> items-end-safe
+
+# Text wrap overflow
+wrap-break-word wrap-normal wrap-anywhere
+=> wrap-anywhere
+
+# Text shadow
+text-shadow-none text-shadow-2xl
+=> text-shadow-2xl
+
+# Text shadow vs regular shadow
+text-shadow-none text-shadow-md text-shadow-red text-shadow-red-500 shadow-red shadow-3xs
+=> text-shadow-md text-shadow-red-500 shadow-red shadow-3xs
+
+# Mask composite
+mask-add mask-subtract
+=> mask-subtract
+
+# Mask type
+mask-type-luminance mask-type-alpha
+=> mask-type-alpha
+
+# Shadow with opacity modifier
+shadow-md shadow-lg/25 text-shadow-md text-shadow-lg/25
+=> shadow-lg/25 text-shadow-lg/25
+
+# Drop shadow color and size
+drop-shadow-some-color drop-shadow-[#123456] drop-shadow-lg drop-shadow-[10px_0]
+=> drop-shadow-[#123456] drop-shadow-[10px_0]
+
+# Drop shadow order matters
+drop-shadow-[#123456] drop-shadow-some-color
+=> drop-shadow-some-color
+
+# Drop shadow with type label
+drop-shadow-2xl drop-shadow-[shadow:foo]
+=> drop-shadow-[shadow:foo]
+
+# ==============================================================================
+# Tailwind CSS v4.1.5 features (tailwind-css-versions.test.ts)
+# ==============================================================================
+
+# Line-height units
+h-12 h-lh
+=> h-lh
+
+# Min height line-height
+min-h-12 min-h-lh
+=> min-h-lh
+
+# Max height line-height
+max-h-12 max-h-lh
+=> max-h-lh
+
+# ==============================================================================
+# Whitespace normalization (wonky-inputs.test.ts)
+# Note: Literal newline tests are in winnow.parse-test
+# ==============================================================================
+
+# Multiple internal spaces
+  block  px-2     py-4
+=> block px-2 py-4
+
+# Leading and trailing spaces
+ block hidden
+=> hidden
+
+# Mixed spacing with conflict
+  overflow-x-auto   overflow-x-hidden
+=> overflow-x-hidden
+
+# ==============================================================================
+# Content utilities (content-utilities.test.ts)
+# ==============================================================================
+
+# Content arbitrary values conflict
+content-['hello'] content-[attr(data-content)]
+=> content-[attr(data-content)]
+
+# ==============================================================================
+# Stroke color vs width distinction (colors.test.ts)
+# ==============================================================================
+
+# HSL color and pixel width don't conflict
+stroke-[hsl(350_80%_0%)] stroke-[10px]
+=> stroke-[hsl(350_80%_0%)] stroke-[10px]
+
+# RGB color and width don't conflict
+stroke-[rgb(255,0,0)] stroke-2
+=> stroke-[rgb(255,0,0)] stroke-2
+
+# Named color and arbitrary width don't conflict
+stroke-red stroke-[3]
+=> stroke-red stroke-[3]
+
+# ==============================================================================
+# Non-Tailwind class preservation
+# ==============================================================================
+
+# Custom classes are preserved
+my-custom-class block hidden
+=> my-custom-class hidden
+
+# Multiple custom classes preserved
+foo bar block hidden baz
+=> foo bar hidden baz
+
+# Custom classes with modifiers preserved
+hover:my-custom block hidden
+=> hover:my-custom hidden
+
+# ==============================================================================
+# Tailwind CSS v4.1 additional features
+# ==============================================================================
+
+# Mask utilities
+mask-t-from-50% mask-t-from-100%
+=> mask-t-from-100%
+
+mask-radial-at-center mask-radial-at-top
+=> mask-radial-at-top
+
+mask-b-to-50% mask-b-to-100%
+=> mask-b-to-100%
+
+# Pointer/input device variants
+pointer-fine:p-2 pointer-fine:p-4
+=> pointer-fine:p-4
+
+pointer-coarse:text-lg pointer-coarse:text-xl
+=> pointer-coarse:text-xl
+
+any-pointer-fine:flex any-pointer-fine:grid
+=> any-pointer-fine:grid
+
+# Details variant
+details-content:block details-content:hidden
+=> details-content:hidden
+
+# Inverted colors variant
+inverted-colors:bg-white inverted-colors:bg-black
+=> inverted-colors:bg-black
+
+# Noscript variant
+noscript:block noscript:hidden
+=> noscript:hidden
+
+# User validation variants
+user-valid:border-green-500 user-valid:border-blue-500
+=> user-valid:border-blue-500
+
+user-invalid:border-red-500 user-invalid:border-pink-500
+=> user-invalid:border-pink-500
+
+# ==============================================================================
+# Tailwind CSS v4 newer variants
+# ==============================================================================
+
+# not-* variant
+not-hover:opacity-50 not-hover:opacity-100
+=> not-hover:opacity-100
+
+# nth-* variants
+nth-1:bg-white nth-1:bg-gray-100
+=> nth-1:bg-gray-100
+
+nth-odd:p-2 nth-odd:p-4
+=> nth-odd:p-4
+
+# in-* variant (like group-* but without group class)
+in-hover:text-blue-500 in-hover:text-red-500
+=> in-hover:text-red-500
+
+# starting variant (@starting-style)
+starting:opacity-0 starting:opacity-100
+=> starting:opacity-100
+
+starting:scale-95 starting:scale-100
+=> starting:scale-100
+
+# Descendant variant
+**:text-sm **:text-lg
+=> **:text-lg
+
+# Container query variants
+@md:p-2 @md:p-4
+=> @md:p-4
+
+@lg:flex @lg:grid
+=> @lg:grid
+
+@[400px]:block @[400px]:hidden
+=> @[400px]:hidden
+
+# ==============================================================================
+# Transform utilities (standalone in v4)
+# ==============================================================================
+
+# Translate
+translate-x-2 translate-x-4
+=> translate-x-4
+
+-translate-x-2 translate-x-4
+=> translate-x-4
+
+translate-y-1/2 translate-y-full
+=> translate-y-full
+
+# Skew
+skew-x-2 skew-x-6
+=> skew-x-6
+
+-skew-y-3 skew-y-6
+=> skew-y-6
+
+# Scale axes
+scale-x-50 scale-x-100
+=> scale-x-100
+
+scale-y-75 scale-y-125
+=> scale-y-125

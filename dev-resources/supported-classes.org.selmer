@@ -1,0 +1,26 @@
+#+title:   Supported classes
+#+date:    {{ date }}
+#+startup: content
+
+* Overview
+Winnow recognizes *{{ exact-count }}* exact matches and *{{ prefix-count }}* prefix patterns.
+
+- Exact matches: Classes like =block=, =hidden=, =flex= that match exactly
+- Prefix patterns: Patterns like =p-*=, =bg-*= that match any suffix
+
+* Exact Matches
+These classes are recognized exactly as written.
+{% for group in exact-groups %}
+** {{ group.name }}
+{% for class in group.classes %}- ~{{ class }}~
+{% endfor %}{% endfor %}
+* Prefix Patterns
+These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px=, =p-[10px]=.
+
+{% for prefix in prefixes %}- ~{{ prefix }}-*~
+{% endfor %}
+* Colors
+These color names are recognized in color utilities like =bg-*=, =text-*=, =border-*=.
+
+{% for color in colors %}- ~{{ color }}~
+{% endfor %}

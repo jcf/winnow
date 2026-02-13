@@ -1,0 +1,627 @@
+#+title:   Supported classes
+#+date:    2026-02-14
+#+startup: content
+
+* Overview
+Winnow recognizes *205* exact matches and *240* prefix patterns.
+
+- Exact matches: Classes like =block=, =hidden=, =flex= that match exactly
+- Prefix patterns: Patterns like =p-*=, =bg-*= that match any suffix
+
+* Exact Matches
+These classes are recognized exactly as written.
+
+** Appearance
+- ~appearance-auto~
+- ~appearance-none~
+
+** Backface
+- ~backface-hidden~
+- ~backface-visible~
+
+** Bg attachment
+- ~bg-fixed~
+- ~bg-local~
+- ~bg-scroll~
+
+** Bg clip
+- ~bg-clip-border~
+- ~bg-clip-content~
+- ~bg-clip-padding~
+- ~bg-clip-text~
+
+** Bg image
+- ~bg-none~
+
+** Bg origin
+- ~bg-origin-border~
+- ~bg-origin-content~
+- ~bg-origin-padding~
+
+** Bg repeat
+- ~bg-no-repeat~
+- ~bg-repeat~
+- ~bg-repeat-round~
+- ~bg-repeat-space~
+- ~bg-repeat-x~
+- ~bg-repeat-y~
+
+** Bg size
+- ~bg-auto~
+- ~bg-contain~
+- ~bg-cover~
+
+** Border collapse
+- ~border-collapse~
+- ~border-separate~
+
+** Border style
+- ~border-dashed~
+- ~border-dotted~
+- ~border-double~
+- ~border-hidden~
+- ~border-none~
+- ~border-solid~
+
+** Box sizing
+- ~box-border~
+- ~box-content~
+
+** Decoration style
+- ~decoration-dashed~
+- ~decoration-dotted~
+- ~decoration-double~
+- ~decoration-solid~
+- ~decoration-wavy~
+
+** Display
+- ~block~
+- ~contents~
+- ~flex~
+- ~flow-root~
+- ~grid~
+- ~hidden~
+- ~inline~
+- ~inline-block~
+- ~inline-flex~
+- ~inline-grid~
+- ~list-item~
+
+** Divide style
+- ~divide-dashed~
+- ~divide-dotted~
+- ~divide-double~
+- ~divide-none~
+- ~divide-solid~
+
+** Flex
+- ~flex-1~
+- ~flex-auto~
+- ~flex-initial~
+- ~flex-none~
+
+** Flex direction
+- ~flex-col~
+- ~flex-col-reverse~
+- ~flex-row~
+- ~flex-row-reverse~
+
+** Flex wrap
+- ~flex-nowrap~
+- ~flex-wrap~
+- ~flex-wrap-reverse~
+
+** Font smoothing
+- ~antialiased~
+- ~subpixel-antialiased~
+
+** Font style
+- ~italic~
+- ~not-italic~
+
+** Forced color adjust
+- ~forced-color-adjust-auto~
+- ~forced-color-adjust-none~
+
+** Fvn figure
+- ~lining-nums~
+- ~oldstyle-nums~
+
+** Fvn fraction
+- ~diagonal-fractions~
+- ~stacked-fractions~
+
+** Fvn ordinal
+- ~ordinal~
+
+** Fvn reset
+- ~normal-nums~
+
+** Fvn slashed zero
+- ~slashed-zero~
+
+** Fvn spacing
+- ~proportional-nums~
+- ~tabular-nums~
+
+** Grid flow
+- ~grid-flow-col~
+- ~grid-flow-col-dense~
+- ~grid-flow-dense~
+- ~grid-flow-row~
+- ~grid-flow-row-dense~
+
+** Grow
+- ~grow~
+
+** Inert
+- ~inert~
+
+** Inset ring w
+- ~inset-ring~
+
+** Isolation
+- ~isolate~
+- ~isolation-auto~
+
+** List style position
+- ~list-inside~
+- ~list-outside~
+
+** List style type
+- ~list-decimal~
+- ~list-disc~
+- ~list-none~
+
+** Mask composite
+- ~mask-add~
+- ~mask-exclude~
+- ~mask-intersect~
+- ~mask-subtract~
+
+** Object fit
+- ~object-contain~
+- ~object-cover~
+- ~object-fill~
+- ~object-none~
+- ~object-scale-down~
+
+** Overflow
+- ~overflow-auto~
+- ~overflow-clip~
+- ~overflow-hidden~
+- ~overflow-scroll~
+- ~overflow-visible~
+
+** Overscroll
+- ~overscroll-auto~
+- ~overscroll-contain~
+- ~overscroll-none~
+
+** Pointer events
+- ~pointer-events-auto~
+- ~pointer-events-none~
+
+** Position
+- ~absolute~
+- ~fixed~
+- ~relative~
+- ~static~
+- ~sticky~
+
+** Resize
+- ~resize~
+- ~resize-none~
+- ~resize-x~
+- ~resize-y~
+
+** Ring w
+- ~ring~
+
+** Rotate
+- ~rotate-none~
+
+** Scroll behavior
+- ~scroll-auto~
+- ~scroll-smooth~
+
+** Shadow
+- ~shadow~
+
+** Shrink
+- ~shrink~
+
+** Snap align
+- ~snap-align-none~
+- ~snap-center~
+- ~snap-end~
+- ~snap-start~
+
+** Snap stop
+- ~snap-always~
+- ~snap-normal~
+
+** Snap strictness
+- ~snap-mandatory~
+- ~snap-proximity~
+
+** Snap type
+- ~snap-both~
+- ~snap-none~
+- ~snap-x~
+- ~snap-y~
+
+** Sr
+- ~not-sr-only~
+- ~sr-only~
+
+** Table layout
+- ~table-auto~
+- ~table-fixed~
+
+** Text align
+- ~text-center~
+- ~text-end~
+- ~text-justify~
+- ~text-left~
+- ~text-right~
+- ~text-start~
+
+** Text decoration
+- ~line-through~
+- ~no-underline~
+- ~overline~
+- ~underline~
+
+** Text overflow
+- ~text-clip~
+- ~text-ellipsis~
+- ~truncate~
+
+** Text shadow
+- ~text-shadow~
+- ~text-shadow-none~
+
+** Text transform
+- ~capitalize~
+- ~lowercase~
+- ~normal-case~
+- ~uppercase~
+
+** Touch
+- ~touch-auto~
+- ~touch-manipulation~
+- ~touch-none~
+
+** Touch px
+- ~touch-pan-left~
+- ~touch-pan-right~
+- ~touch-pan-x~
+
+** Touch py
+- ~touch-pan-down~
+- ~touch-pan-up~
+- ~touch-pan-y~
+
+** Touch pz
+- ~touch-pinch-zoom~
+
+** Transform style
+- ~transform-3d~
+- ~transform-flat~
+
+** Transition
+- ~transition-all~
+- ~transition-colors~
+- ~transition-none~
+- ~transition-opacity~
+- ~transition-property~
+- ~transition-shadow~
+- ~transition-transform~
+
+** Transition behavior
+- ~transition-discrete~
+- ~transition-normal~
+
+** Vertical align
+- ~align-baseline~
+- ~align-bottom~
+- ~align-middle~
+- ~align-sub~
+- ~align-super~
+- ~align-text-bottom~
+- ~align-text-top~
+- ~align-top~
+
+** Visibility
+- ~collapse~
+- ~invisible~
+- ~visible~
+
+** Will change
+- ~will-change-auto~
+- ~will-change-contents~
+- ~will-change-scroll~
+- ~will-change-transform~
+
+** Word break
+- ~break-all~
+- ~break-keep~
+- ~break-normal~
+- ~break-words~
+
+* Prefix Patterns
+These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px=, =p-[10px]=.
+
+- ~-bottom-*~
+- ~-end-*~
+- ~-hue-rotate-*~
+- ~-inset-*~
+- ~-inset-x-*~
+- ~-inset-y-*~
+- ~-left-*~
+- ~-m-*~
+- ~-mb-*~
+- ~-me-*~
+- ~-ml-*~
+- ~-mr-*~
+- ~-ms-*~
+- ~-mt-*~
+- ~-mx-*~
+- ~-my-*~
+- ~-order-*~
+- ~-right-*~
+- ~-rotate-*~
+- ~-skew-x-*~
+- ~-skew-y-*~
+- ~-start-*~
+- ~-top-*~
+- ~-translate-x-*~
+- ~-translate-y-*~
+- ~-translate-z-*~
+- ~-z-*~
+- ~accent-*~
+- ~animate-*~
+- ~aspect-*~
+- ~auto-cols-*~
+- ~auto-rows-*~
+- ~backdrop-blur-*~
+- ~backdrop-brightness-*~
+- ~backdrop-contrast-*~
+- ~backdrop-grayscale-*~
+- ~backdrop-hue-rotate-*~
+- ~backdrop-invert-*~
+- ~backdrop-opacity-*~
+- ~backdrop-saturate-*~
+- ~backdrop-sepia-*~
+- ~basis-*~
+- ~bg-*~
+- ~bg-conic-*~
+- ~bg-linear-*~
+- ~bg-radial-*~
+- ~blur-*~
+- ~border-*~
+- ~border-b-*~
+- ~border-e-*~
+- ~border-l-*~
+- ~border-r-*~
+- ~border-s-*~
+- ~border-spacing-*~
+- ~border-spacing-x-*~
+- ~border-spacing-y-*~
+- ~border-t-*~
+- ~border-x-*~
+- ~border-y-*~
+- ~bottom-*~
+- ~brightness-*~
+- ~caption-*~
+- ~caret-*~
+- ~clear-*~
+- ~col-*~
+- ~col-end-*~
+- ~col-span-*~
+- ~col-start-*~
+- ~columns-*~
+- ~content-*~
+- ~contrast-*~
+- ~cursor-*~
+- ~decoration-*~
+- ~delay-*~
+- ~divide-*~
+- ~divide-x-*~
+- ~divide-x-reverse-*~
+- ~divide-y-*~
+- ~divide-y-reverse-*~
+- ~drop-shadow-*~
+- ~duration-*~
+- ~ease-*~
+- ~end-*~
+- ~field-sizing-*~
+- ~fill-*~
+- ~float-*~
+- ~font-*~
+- ~font-stretch-*~
+- ~from-*~
+- ~gap-*~
+- ~gap-x-*~
+- ~gap-y-*~
+- ~grayscale-*~
+- ~grid-cols-*~
+- ~grid-rows-*~
+- ~group-has-*~
+- ~grow-*~
+- ~h-*~
+- ~has-*~
+- ~hue-rotate-*~
+- ~hyphens-*~
+- ~indent-*~
+- ~inset-*~
+- ~inset-ring-*~
+- ~inset-x-*~
+- ~inset-y-*~
+- ~invert-*~
+- ~items-*~
+- ~justify-*~
+- ~leading-*~
+- ~left-*~
+- ~line-clamp-*~
+- ~list-image-*~
+- ~m-*~
+- ~mask-b-from-*~
+- ~mask-b-to-*~
+- ~mask-l-from-*~
+- ~mask-l-to-*~
+- ~mask-r-from-*~
+- ~mask-r-to-*~
+- ~mask-radial-*~
+- ~mask-radial-at-*~
+- ~mask-radial-from-*~
+- ~mask-radial-to-*~
+- ~mask-t-from-*~
+- ~mask-t-to-*~
+- ~mask-type-*~
+- ~max-h-*~
+- ~max-w-*~
+- ~mb-*~
+- ~me-*~
+- ~min-h-*~
+- ~min-w-*~
+- ~mix-blend-*~
+- ~ml-*~
+- ~mr-*~
+- ~ms-*~
+- ~mt-*~
+- ~mx-*~
+- ~my-*~
+- ~object-*~
+- ~opacity-*~
+- ~order-*~
+- ~outline-*~
+- ~overflow-*~
+- ~overflow-x-*~
+- ~overflow-y-*~
+- ~p-*~
+- ~pb-*~
+- ~pe-*~
+- ~perspective-*~
+- ~perspective-origin-*~
+- ~pl-*~
+- ~place-content-*~
+- ~place-items-*~
+- ~place-self-*~
+- ~placeholder-*~
+- ~pr-*~
+- ~ps-*~
+- ~pt-*~
+- ~px-*~
+- ~py-*~
+- ~right-*~
+- ~ring-*~
+- ~rotate-*~
+- ~rotate-x-*~
+- ~rotate-y-*~
+- ~rotate-z-*~
+- ~rounded-*~
+- ~rounded-b-*~
+- ~rounded-bl-*~
+- ~rounded-br-*~
+- ~rounded-e-*~
+- ~rounded-ee-*~
+- ~rounded-es-*~
+- ~rounded-l-*~
+- ~rounded-r-*~
+- ~rounded-s-*~
+- ~rounded-se-*~
+- ~rounded-ss-*~
+- ~rounded-t-*~
+- ~rounded-tl-*~
+- ~rounded-tr-*~
+- ~row-*~
+- ~row-end-*~
+- ~row-span-*~
+- ~row-start-*~
+- ~saturate-*~
+- ~scale-*~
+- ~scale-x-*~
+- ~scale-y-*~
+- ~scale-z-*~
+- ~scheme-*~
+- ~scroll-m-*~
+- ~scroll-mb-*~
+- ~scroll-me-*~
+- ~scroll-ml-*~
+- ~scroll-mr-*~
+- ~scroll-ms-*~
+- ~scroll-mt-*~
+- ~scroll-mx-*~
+- ~scroll-my-*~
+- ~scroll-p-*~
+- ~scroll-pb-*~
+- ~scroll-pe-*~
+- ~scroll-pl-*~
+- ~scroll-pr-*~
+- ~scroll-ps-*~
+- ~scroll-pt-*~
+- ~scroll-px-*~
+- ~scroll-py-*~
+- ~select-*~
+- ~self-*~
+- ~sepia-*~
+- ~shadow-*~
+- ~shrink-*~
+- ~size-*~
+- ~skew-x-*~
+- ~skew-y-*~
+- ~space-x-*~
+- ~space-x-reverse-*~
+- ~space-y-*~
+- ~space-y-reverse-*~
+- ~start-*~
+- ~stroke-*~
+- ~text-*~
+- ~text-shadow-*~
+- ~to-*~
+- ~top-*~
+- ~tracking-*~
+- ~transform-origin-*~
+- ~translate-x-*~
+- ~translate-y-*~
+- ~translate-z-*~
+- ~underline-offset-*~
+- ~via-*~
+- ~w-*~
+- ~whitespace-*~
+- ~wrap-*~
+- ~z-*~
+
+* Colors
+These color names are recognized in color utilities like =bg-*=, =text-*=, =border-*=.
+
+- ~amber~
+- ~black~
+- ~blue~
+- ~current~
+- ~cyan~
+- ~emerald~
+- ~fuchsia~
+- ~gray~
+- ~green~
+- ~indigo~
+- ~inherit~
+- ~lime~
+- ~neutral~
+- ~orange~
+- ~pink~
+- ~purple~
+- ~red~
+- ~rose~
+- ~sky~
+- ~slate~
+- ~stone~
+- ~teal~
+- ~transparent~
+- ~violet~
+- ~white~
+- ~yellow~
+- ~zinc~
+

@@ -1,0 +1,16 @@
+*.class
+*.jar
+.claude/settings.local.json
+/.claude/settings.json
+/.clj-kondo/.cache
+/.cpcache
+/.devenv
+/.devenv.flake.nix
+/.direnv
+/.lsp/.cache
+/.nrepl-history
+/.nrepl-port
+/target
+node_modules
+pom.xml
+pom.xml.asc

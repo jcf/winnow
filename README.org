@@ -1,0 +1,247 @@
+#+title: Winnow
+#+author: James Conroy-Finn
+#+startup: content
+
+*Winnow*: blow away conflicting Tailwind CSS classes.
+
+A Clojure library for merging Tailwind CSS classes, resolving conflicts by
+keeping the last value for each conflict group. Inspired by [[https://github.com/dcastil/tailwind-merge][tailwind-merge]].
+
+* Installation
+Add winnow to your dependencies (assuming you're using tools.deps):
+
+#+begin_src clojure :eval never
+dev.invetica/winnow {:git/url "https://github.com/jcf/winnow"
+                     :git/sha "replace-me"}
+#+end_src
+
+* Usage
+#+begin_src clojure :eval never
+(require
+ '[winnow.api :as winnow])
+
+;; Basic conflict resolution - last wins
+(winnow/resolve ["px-2 py-4" "px-6"])
+;; => "py-4 px-6"
+
+;; Modifiers create separate conflict groups
+(winnow/resolve ["text-red-500 hover:text-blue-500" "text-green-500"])
+;; => "hover:text-blue-500 text-green-500"
+
+;; Works with arbitrary values
+(winnow/resolve ["p-4" "p-[10px]"])
+;; => "p-[10px]"
+
+;; Supports CSS variables
+(winnow/resolve ["bg-red-500" "bg-(--theme-bg)"])
+;; => "bg-(--theme-bg)"
+#+end_src
+
+** Custom Colors
+By default, winnow recognizes standard Tailwind colors. To add custom theme
+colors, use =make-resolver=:
+
+#+begin_src clojure :eval never
+(def resolve
+  (winnow/make-resolver {:colors #{"primary" "secondary" "surface"}}))
+
+;; Now custom colors properly conflict with standard ones
+(resolve ["bg-red-500" "bg-primary"])
+;; => "bg-primary"
+#+end_src
+
+Without configuration, unknown color names don't conflict with known colors
+because they're classified into different groups.
+
+** Class Prefix
+If your Tailwind config uses a prefix (e.g., =tw-= or =tw:=), configure it:
+
+#+begin_src clojure :eval never
+(def resolve
+  (winnow/make-resolver {:prefix "tw-"}))
+
+;; Prefixed classes merge normally
+(resolve ["tw-px-2 tw-px-4"])
+;; => "tw-px-4"
+
+;; Non-prefixed classes pass through unchanged
+(resolve ["px-2 px-4"])
+;; => "px-2 px-4"
+#+end_src
+
+* Platform Support
+Winnow runs on Clojure, ClojureScript, and Babashka:
+
+| Platform      | Status | Notes                        |
+|---------------+--------+------------------------------|
+| Clojure (JVM) | ✓      | Full support, optimized      |
+| ClojureScript | ✓      | Full support, works in Node and browsers |
+| Babashka      | ✓      | Full support                 |
+
+The same API works across all platforms:
+
+#+begin_src clojure :eval never
+(require '[winnow.api :as winnow])
+(winnow/resolve ["px-2 px-4"])
+;; => "px-4"
+#+end_src
+
+* Features
+** Tailwind 4.1 Coverage
+Winnow supports the full Tailwind CSS 4.1 specification including:
+
+- All layout, spacing, typography, and color utilities
+- Transform utilities (=translate-x=, =skew-y=, =scale-z=, etc.)
+- Mask utilities (=mask-t-from=, =mask-radial-at=, etc.)
+- Container queries (=@md:=, =@lg:=, =@[400px]:=)
+- Logical properties (=ps-=, =pe-=, =ms-=, =me-=, =rounded-ss-=, etc.)
+- All v4 variants (=starting:=, =not-*:=, =in-*:=, =nth-*:=, etc.)
+
+See [[file:doc/supported-classes.org][supported-classes.org]] for the complete list of 445 recognized patterns.
+
+** Supported Syntax
+- Arbitrary values: =p-[10px]=, =bg-[#ff0000]=, =grid-cols-[1fr_2fr]=
+- CSS variables: =text-(--my-color)=, =bg-(color:--theme-bg)=
+- Type hints: =[length:var(--x)]=, =[color:theme(colors.primary)]=
+- Modifiers: =hover:=, =focus:=, =sm:=, =md:=, =dark:=, etc.
+- Important: =!p-4= or =p-4!=
+- Negative values: =-m-4=, =-inset-x-2=
+- Arbitrary variants: =[&>*]:p-4=, =[@media(hover:hover)]:flex=
+
+** Conflict Resolution
+Winnow understands Tailwind's utility hierarchy:
+
+#+begin_src clojure :eval never
+;; Shorthand overrides specific sides
+(winnow/resolve ["pt-2 pr-2 pb-2 pl-2" "p-4"])
+;; => "p-4"
+
+;; But not vice versa - specific sides survive
+(winnow/resolve ["p-4" "pt-2"])
+;; => "p-4 pt-2"
+
+;; Inset hierarchy: inset > inset-x/y > individual sides
+(winnow/resolve ["left-0 right-0" "inset-x-4"])
+;; => "inset-x-4"
+
+;; Different utilities don't conflict
+(winnow/resolve ["text-red-500" "text-lg"])  ; color vs size
+;; => "text-red-500 text-lg"
+#+end_src
+
+** Unknown Classes
+Classes not recognized as Tailwind utilities pass through unchanged:
+
+#+begin_src clojure :eval never
+(winnow/resolve ["my-custom-class" "block" "hidden"])
+;; => "my-custom-class hidden"
+#+end_src
+
+* Development
+** Prerequisites
+- Clojure 1.12+
+- Java 17+
+
+** Just Tasks
+#+begin_src sh :results output verbatim :exports both
+just --list
+#+end_src
+
+#+results:
+#+begin_example
+Available recipes:
+    [dev]
+    fmt        # Format project files
+    lint       # Run lints
+
+    [docs]
+    docs       # Generate documentation
+
+    [test]
+    bench      # Run benchmarks
+    compare    # Compare tailwind-merge-clj conformance
+    conform    # Run conformance test suite
+    hygiene    # Check for reflection and boxing warnings
+    test *args # Run tests
+    test-bb    # Run Babashka tests
+    test-cljs  # Run ClojureScript tests
+#+end_example
+
+** Running Tests
+#+begin_src sh :eval never
+just test
+#+end_src
+
+The test suite includes:
+
+- *Unit tests* for parsing and API behavior
+- *257 conformance tests* derived from tailwind-merge's test suite
+- *Property-based tests* using =clojure.test.check= to verify invariants:
+  - Idempotence: =resolve(resolve(x)) = resolve(x)=
+  - Output is always a subset of input classes
+  - Modifier groups remain independent
+  - Conflict relationships are symmetric
+
+* Alternatives
+** tailwind-merge-clj
+[[https://github.com/shipclojure/tailwind-merge-clj][tailwind-merge-clj]] is a Clojure/ClojureScript port of the JavaScript
+tailwind-merge library. It works on both runtimes but only supports Tailwind
+v3.0–v3.4.
+
+Against winnow's 257-test conformance suite (which covers Tailwind v4.1):
+
+| Library            | Conformance |
+|--------------------+-------------|
+| winnow             | 257/257     |
+| tailwind-merge-clj | 218/257     |
+
+The 39 failing tests are primarily Tailwind v4 features:
+
+- CSS variable syntax: =bg-(--custom-color)=, =font-(weight:--var)=
+- New utilities: =transform-3d=, =perspective-*=, =inset-ring-*=, =bg-linear-*=
+- Postfix important modifier: =p-4!=
+
+** Java Libraries
+No pure Java implementations of Tailwind class merging exist. JVM projects
+without Clojure would need to embed a JavaScript runtime or port the logic
+themselves.
+
+** Why Winnow?
+- *Tailwind v4.1 support* — Full coverage of v4 utilities and syntax
+- *Conformance tested* — 257 test cases derived from tailwind-merge
+- *Cross-platform* — Works on Clojure, ClojureScript, and Babashka
+- *Pure Clojure* — No JavaScript runtime or external dependencies
+- *Fast* — Sub-microsecond resolution for typical inputs
+
+* Performance
+Run benchmarks with =just bench=. Results on Apple M4:
+
+| Scenario    | Classes | Conflicts | Time     |
+|-------------+---------+-----------+----------|
+| Small       |       2 |         1 | 932 ns   |
+| Medium      |      10 |         2 | 5.53 µs  |
+| Large       |      25 |         8 | 13.64 µs |
+| Modifiers   |       4 |         2 | 6.11 µs  |
+| Arbitrary   |       7 |         4 | 5.26 µs  |
+| No conflict |       9 |         0 | 5.40 µs  |
+
+Winnow uses a trie for O(n) prefix matching and processes classes in a single
+pass. The resolver is stateless and thread-safe.
+
+* Contributing
+See [[file:CONTRIBUTING.org][CONTRIBUTING.org]] for guidelines. Claude Code users can run =/contribute= for
+an interactive guide.
+
+* License
+AGPL-3.0. See [[file:LICENSE][LICENSE]].
+
+* Consulting
+Looking for Clojure expertise? I offer consulting services for teams building
+production systems:
+
+- *Clojure & ClojureScript development* — Architecture, implementation, code review
+- *Fractional CTO* — Technical leadership for startups and growing teams
+- *AI-assisted development* — Leveraging language models to ship production-quality
+  software faster
+
+Get in touch: [[https://www.invetica.co.uk/][invetica.co.uk]]

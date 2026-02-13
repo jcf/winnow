@@ -1,0 +1,16 @@
+{
+  "name": "winnow-conformance",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.18.0",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "tailwind-merge": "^3.0.0"
+  },
+  "devDependencies": {
+    "vitest": "^3.0.0"
+  }
+}

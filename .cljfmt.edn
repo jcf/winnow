@@ -1,0 +1,13 @@
+{:align-associative?              true
+ :insert-missing-whitespace?      true
+ :remove-consecutive-blank-lines? true
+ :remove-trailing-whitespace?     true
+ :remove-surrounding-whitespace?  true
+ :function-arguments-indentation  :community
+ :parallel?                       true
+ :paths                           ["src" "test"]
+ :sort-ns-references?             true
+
+ :extra-indents
+ {clojure.test.check.clojure-test/defspec [[:block 1]]
+  clojure.test.check.properties/for-all   [[:block 1]]}}

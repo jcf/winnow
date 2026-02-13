@@ -1,0 +1,6 @@
+{:lint-as
+ {clojure.test.check.clojure-test/defspec clojure.test/deftest}
+
+ :linters
+ {:unresolved-symbol
+  {:exclude [(clojure.test/is [invalid? valid? well-specified?])]}}}
