@@ -145,3 +145,35 @@ just docs
 ```
 
 This runs `clojure -M:dev -m winnow.doc` which generates `doc/supported-classes.org`.
+
+## Behavioral Differences from tailwind-merge
+
+Winnow intentionally diverges from tailwind-merge in how it handles unknown classes:
+
+| Input | tailwind-merge | winnow |
+|-------|----------------|--------|
+| `text-4xl text-primary` | `text-primary` | `text-4xl text-primary` |
+| `bg-red-500 bg-brand` | `bg-brand` | `bg-red-500 bg-brand` |
+
+tailwind-merge assumes unknown values are colors. Winnow requires explicit configuration:
+
+```clojure
+;; Unknown classes pass through unchanged
+(winnow/resolve ["text-4xl" "text-primary"])
+;; => "text-4xl text-primary"
+
+;; Configure custom colors to participate in conflict resolution
+(def resolve (winnow/make-resolver {:colors #{"primary"}}))
+(resolve ["text-red-500" "text-primary"])
+;; => "text-primary"
+
+;; Configure custom text sizes
+(def resolve (winnow/make-resolver {:text-sizes #{"hero" "display"}}))
+(resolve ["text-xl" "text-hero"])
+;; => "text-hero"
+```
+
+This is safer for:
+- Projects using multiple CSS frameworks
+- Custom design systems with non-Tailwind naming
+- Catching typos (misspelled classes pass through rather than silently conflicting)

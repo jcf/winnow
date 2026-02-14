@@ -8,10 +8,14 @@
 #   - Blank lines separate test cases visually
 #
 # Compatibility:
-#   Based on tailwind-merge v3.x with corrections from main branch.
-#   Three font-weight/family-name disambiguation cases (lines 347, 355, 379)
-#   reflect upcoming fixes not yet in v3.4.0. See:
-#   https://github.com/dcastil/tailwind-merge/commits/main/tests/arbitrary-values.test.ts
+#   Based on tailwind-merge v3.x test cases as a starting point.
+#
+#   INTENTIONAL DIVERGENCE (see "Unknown classes" section near end of file):
+#   - Unknown values pass through unchanged rather than being treated as colors
+#   - Winnow requires explicit configuration for custom colors via make-resolver
+#   - This is safer for multi-framework projects and catches typos
+#
+#   See CLAUDE.md "Behavioral Differences" section for full rationale.
 
 # ==============================================================================
 # Core merge functionality (tw-merge.test.ts)
@@ -1192,6 +1196,54 @@ starting:scale-95 starting:scale-100
 
 @[400px]:block @[400px]:hidden
 => @[400px]:hidden
+
+# ==============================================================================
+# Unknown classes pass through unchanged
+# ==============================================================================
+
+# Unknown text-* classes don't evict known text utilities
+text-4xl text-primary
+=> text-4xl text-primary
+
+# Multiple unknown classes pass through
+text-4xl text-primary text-surface
+=> text-4xl text-primary text-surface
+
+# Known colors still work correctly
+text-4xl text-red-500
+=> text-4xl text-red-500
+
+# Unknown bg-* classes don't evict known bg utilities
+bg-blue-500 bg-brand
+=> bg-blue-500 bg-brand
+
+# Unknown border-* classes don't evict known border utilities
+border-2 border-primary
+=> border-2 border-primary
+
+# Unknown divide-* classes don't evict known divide utilities
+divide-y-2 divide-primary
+=> divide-y-2 divide-primary
+
+# Unknown fill-* classes don't evict known fill utilities
+fill-current fill-brand
+=> fill-current fill-brand
+
+# Unknown ring-* classes don't evict known ring utilities
+ring-2 ring-primary
+=> ring-2 ring-primary
+
+# Unknown shadow-* classes don't evict known shadow utilities
+shadow-lg shadow-primary
+=> shadow-lg shadow-primary
+
+# Unknown with modifiers still pass through
+hover:text-4xl hover:text-primary
+=> hover:text-4xl hover:text-primary
+
+# Unknown font-* classes don't evict known font utilities
+font-bold font-display
+=> font-bold font-display
 
 # ==============================================================================
 # Transform utilities (standalone in v4)
