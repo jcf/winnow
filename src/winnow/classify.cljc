@@ -10,6 +10,25 @@
   #{"bottom" "center" "left" "left-bottom" "left-top"
     "right" "right-bottom" "right-top" "top"})
 
+(def ^:private text-size-keywords
+  #{"xs" "sm" "base" "lg" "xl"})
+
+(def ^:private font-weight-keywords
+  #{"thin" "extralight" "light" "normal" "medium"
+    "semibold" "bold" "extrabold" "black"})
+
+(def ^:private shadow-size-keywords
+  #{"xs" "sm" "md" "lg" "xl" "none" "inner"})
+
+(def ^:private ring-width-keywords
+  #{"inset"})
+
+(def ^:private border-width-keywords
+  #{})
+
+(def ^:private decoration-thickness-keywords
+  #{"auto" "from-font"})
+
 ;;; ----------------------------------------------------------------------------
 ;;; Value type predicates
 
@@ -54,16 +73,67 @@
 ;;;
 ;;; Unknown color names require configuration via make-resolver.
 
-(defn- strip-opacity
-  [s]
-  (if-let [idx (str/index-of s "/")]
-    (subs s 0 idx)
-    s))
+(defn- strip-postfix
+  [^String s]
+  (if (or (arbitrary? s) (variable? s))
+    s
+    (if-let [idx (str/index-of s "/")]
+      (subs s 0 idx)
+      s)))
+
+(defn- contains-digit?
+  [^String s]
+  #?(:clj  (some #(Character/isDigit ^char %) s)
+     :cljs (boolean (re-find #"\d" s))))
+
+(defn- text-size?
+  [text-sizes ^String s]
+  (let [s (strip-postfix s)]
+    (or (arbitrary? s)
+        (variable? s)
+        (contains-digit? s)
+        (text-size-keywords s)
+        (text-sizes s))))
+
+(defn- font-weight?
+  [^String s]
+  (or (arbitrary? s)
+      (variable? s)
+      (parse-long s)
+      (font-weight-keywords s)))
+
+(defn- shadow-size?
+  [^String s]
+  (let [s (strip-postfix s)]
+    (or (arbitrary? s)
+        (variable? s)
+        (contains-digit? s)
+        (shadow-size-keywords s))))
+
+(defn- ring-width?
+  [^String s]
+  (or (arbitrary? s)
+      (variable? s)
+      (parse-long s)
+      (ring-width-keywords s)))
+
+(defn- border-width?
+  [^String s]
+  (or (arbitrary? s)
+      (variable? s)
+      (parse-long s)
+      (border-width-keywords s)))
+
+(defn- decoration-thickness?
+  [^String s]
+  (or (arbitrary? s)
+      (variable? s)
+      (parse-long s)
+      (decoration-thickness-keywords s)))
 
 (defn- color-name?
-  "Check if value is a known color name or color-shade pattern."
-  [colors s]
-  (let [s (strip-opacity s)]
+  [colors ^String s]
+  (let [s (strip-postfix s)]
     (or (colors s)
         (when-let [idx (str/last-index-of s "-")]
           (colors (subs s 0 idx))))))
@@ -115,19 +185,24 @@
 (defn- resolve-validator
   [config validator-key ^String value]
   (case validator-key
-    :color        (color? (:colors config) value)
-    :color-or-var (color-or-var? (:colors config) value)
-    :number       (parse-double value)
-    :integer      (parse-long value)
-    :percent      (percent? value)
-    :any          true
-    :length       (type-hint-match? #{"length" "size"} value)
-    :position     (or (position-keywords value)
+    :color                (color? (:colors config) value)
+    :color-or-var         (color-or-var? (:colors config) value)
+    :number               (parse-double value)
+    :integer              (parse-long value)
+    :percent              (percent? value)
+    :text-size            (text-size? (or (:text-sizes config) #{}) value)
+    :font-weight          (font-weight? value)
+    :shadow-size          (shadow-size? value)
+    :ring-width           (ring-width? value)
+    :border-width         (border-width? value)
+    :decoration-thickness (decoration-thickness? value)
+    :length               (type-hint-match? #{"length" "size"} value)
+    :position             (or (position-keywords value)
                       (type-hint-match? #{"position" "percentage"} value))
-    :image        (or (type-hint-match? #{"image" "url"} value)
+    :image                (or (type-hint-match? #{"image" "url"} value)
                       (image-value? value))
-    :shadow       (type-hint-match? #{"shadow"} value)
-    :family       (type-hint-match? #{"family-name"} value)
+    :shadow               (type-hint-match? #{"shadow"} value)
+    :family               (type-hint-match? #{"family-name"} value)
     (when-let [pred (get-in config [:validators validator-key])]
       (pred value))))
 

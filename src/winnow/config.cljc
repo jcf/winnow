@@ -241,6 +241,11 @@
     "text-start"   :text-align
     "text-end"     :text-align
 
+    "text-wrap"    :text-wrap
+    "text-nowrap"  :text-wrap
+    "text-pretty"  :text-wrap
+    "text-balance" :text-wrap
+
     "align-baseline"    :vertical-align
     "align-top"         :vertical-align
     "align-middle"      :vertical-align
@@ -398,7 +403,7 @@
     "divide-y"         {:group :divide-y}
     "divide-y-reverse" {:group :divide-y}
     "divide"           {:validators [[:color :divide-color]
-                                     [:any :divide-w]]}
+                                     [:border-width :divide-w]]}
 
     "aspect"  {:group :aspect}
     "columns" {:group :columns}
@@ -425,21 +430,17 @@
     "scroll-pb" {:group :scroll-pb}
     "scroll-pl" {:group :scroll-pl}
 
-    "accent"      {:validators [[:color :accent-color]
-                                [:any :accent]]}
-    "caret"       {:validators [[:color :caret-color]
-                                [:any :caret]]}
-    "fill"        {:validators [[:color :fill]
-                                [:any :fill]]}
-    "placeholder" {:validators [[:color :placeholder-color]
-                                [:any :placeholder]]}
+    "accent"      {:group :accent}
+    "caret"       {:validators [[:color-or-var :caret-color]]}
+    "fill"        {:validators [[:color-or-var :fill]]}
+    "placeholder" {:validators [[:color-or-var :placeholder-color]]}
 
     "indent"           {:group :indent}
     "animate"          {:group :animate}
     "ease"             {:group :ease}
     "underline-offset" {:group :underline-offset}
     "decoration"       {:validators [[:color :decoration-color]
-                                     [:any :decoration-thickness]]}
+                                     [:decoration-thickness :decoration-thickness]]}
 
     "border-spacing"   {:group :border-spacing}
     "border-spacing-x" {:group :border-spacing-x}
@@ -480,8 +481,7 @@
     "bg"        {:validators [[:color-or-var :bg-color]
                               [:position :bg-position]
                               [:image :bg-image]
-                              [:length :bg-size]
-                              [:any :bg]]}
+                              [:length :bg-size]]}
     "bg-linear" {:group :gradient}
     "bg-radial" {:group :gradient}
     "bg-conic"  {:group :gradient}
@@ -489,58 +489,55 @@
                               [:percent :gradient-from-pos]
                               [:length :gradient-from-pos]
                               [:position :gradient-from-pos]
-                              [:any :gradient-from]]}
+                              [:color-or-var :gradient-from]]}
     "via"       {:validators [[:number :gradient-via-pos]
                               [:percent :gradient-via-pos]
                               [:length :gradient-via-pos]
                               [:position :gradient-via-pos]
-                              [:any :gradient-via]]}
+                              [:color-or-var :gradient-via]]}
     "to"        {:validators [[:number :gradient-to-pos]
                               [:percent :gradient-to-pos]
                               [:length :gradient-to-pos]
                               [:position :gradient-to-pos]
-                              [:any :gradient-to]]}
+                              [:color-or-var :gradient-to]]}
 
     "ring"       {:validators [[:color :ring-color]
-                               [:any :ring-w]]}
+                               [:ring-width :ring-w]]}
     "inset-ring" {:validators [[:color :inset-ring-color]
-                               [:any :inset-ring-w]]}
+                               [:ring-width :inset-ring-w]]}
 
     "shadow"      {:validators [[:color :shadow-color]
-                                [:shadow :shadow]
-                                [:any :shadow]]}
+                                [:shadow-size :shadow]]}
     "text-shadow" {:validators [[:color :text-shadow-color]
-                                [:shadow :text-shadow]
-                                [:any :text-shadow]]}
+                                [:shadow-size :text-shadow]]}
     "drop-shadow" {:validators [[:color :drop-shadow-color]
-                                [:shadow :drop-shadow]
-                                [:any :drop-shadow]]}
+                                [:shadow-size :drop-shadow]]}
 
     "mix-blend" {:group :mix-blend}
 
     "stroke"  {:validators [[:stroke-width :stroke-w]
-                            [:any :stroke-color]]}
+                            [:color-or-var :stroke-color]]}
     "outline" {:validators [[:integer :outline-w]
-                            [:any :outline-color]]}
+                            [:color-or-var :outline-color]]}
 
     "border"   {:validators [[:color :border-color]
-                             [:any :border-w]]}
+                             [:border-width :border-w]]}
     "border-x" {:validators [[:color :border-x-color]
-                             [:any :border-x-w]]}
+                             [:border-width :border-x-w]]}
     "border-y" {:validators [[:color :border-y-color]
-                             [:any :border-y-w]]}
+                             [:border-width :border-y-w]]}
     "border-t" {:validators [[:color :border-t-color]
-                             [:any :border-t-w]]}
+                             [:border-width :border-t-w]]}
     "border-r" {:validators [[:color :border-r-color]
-                             [:any :border-r-w]]}
+                             [:border-width :border-r-w]]}
     "border-b" {:validators [[:color :border-b-color]
-                             [:any :border-b-w]]}
+                             [:border-width :border-b-w]]}
     "border-l" {:validators [[:color :border-l-color]
-                             [:any :border-l-w]]}
+                             [:border-width :border-l-w]]}
     "border-s" {:validators [[:color :border-s-color]
-                             [:any :border-s-w]]}
+                             [:border-width :border-s-w]]}
     "border-e" {:validators [[:color :border-e-color]
-                             [:any :border-e-w]]}
+                             [:border-width :border-e-w]]}
 
     "col-span"  {:group :col-span}
     "col"       {:group :col}
@@ -579,13 +576,13 @@
     "perspective-origin" {:group :perspective-origin}
 
     "text"       {:validators [[:color-or-var :text-color]
-                               [:any :text-size]]}
+                               [:text-size :text-size]]}
     "line-clamp" {:group :line-clamp}
     "leading"    {:group :leading}
     "tracking"   {:group :tracking}
 
     "font"         {:validators [[:family :font-family]
-                                 [:any :font]]}
+                                 [:font-weight :font-weight]]}
     "font-stretch" {:group :font-stretch}
 
     "cursor" {:group :cursor}

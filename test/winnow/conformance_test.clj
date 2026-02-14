@@ -50,17 +50,16 @@
       (is (= expected (resolve parts)) input))))
 
 (deftest custom-colors-require-configuration
-  ;; Without configuration, unknown colors fall to generic `:bg` group and still
-  ;; conflict (last wins), but as `:bg` not `:bg-color`.
-  (is (= "bg-primary"
+  ;; Unknown values pass through unchanged without participating in conflict
+  ;; resolution. They don't conflict with known utilities OR with each other.
+  (is (= "bg-brand bg-primary"
          (api/resolve ["bg-brand bg-primary"]))
-      "unknown values on same prefix still conflict")
+      "unknown values pass through unchanged")
 
-  ;; The key difference: without config, custom colors don't conflict with KNOWN
-  ;; colors because they're in different groups.
+  ;; Unknown values don't conflict with known utilities
   (is (= "bg-red bg-brand"
          (api/resolve ["bg-red bg-brand"]))
-      "unknown 'brand' doesn't override known 'red' - different groups")
+      "unknown 'brand' doesn't conflict with known 'red'")
 
   ;; With configuration, custom colors properly conflict with standard ones.
   (let [resolve (api/make-resolver {:colors #{"brand"}})]

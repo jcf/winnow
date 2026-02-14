@@ -153,14 +153,16 @@
   "Returns a resolve function using a custom config.
 
   Options:
-    :colors - set of custom color names to add (e.g. #{\"surface\" \"primary\"})
-    :prefix - class prefix to strip before processing (e.g. \"tw-\" or \"tw:\")"
+    :colors     - set of custom color names to add (e.g. #{\"surface\" \"primary\"})
+    :text-sizes - set of custom text size names to add (e.g. #{\"hero\" \"display\"})
+    :prefix     - class prefix to strip before processing (e.g. \"tw-\" or \"tw:\")"
   [config]
-  (let [{:keys [colors prefix]} config
-        cfg                     (cond-> config/default
-                                  colors (update :colors into colors)
-                                  prefix (assoc :class-prefix prefix))
-        compiled                (compile-config cfg)]
+  (let [{:keys [colors text-sizes prefix]} config
+        cfg                                (cond-> config/default
+                                             colors     (update :colors into colors)
+                                             text-sizes (assoc :text-sizes text-sizes)
+                                             prefix     (assoc :class-prefix prefix))
+        compiled                           (compile-config cfg)]
     (fn [classes]
       (resolve compiled classes))))
 
