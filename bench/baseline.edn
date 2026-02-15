@@ -1,45 +1,45 @@
 {:meta
- {:commit "99be3f9",
-  :timestamp "2026-02-15T13:19:01.289217Z",
+ {:commit "e8fe0e8",
+  :timestamp "2026-02-15T14:45:54.550831Z",
   :jvm "21.0.8",
   :os "Mac OS X 26.2",
   :clojure "1.12.4"},
  :results
  [{:samples 6,
    :desc "2 classes, 1 conflict",
-   :mean 1.0231613794273918E-6,
+   :mean 8.774987713109937E-7,
    :name "Small",
-   :variance 6.339438218379055E-17,
+   :variance 2.121462971838596E-17,
    :outliers
    {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
-   :lower-q 1.0150461564039152E-6,
-   :upper-q 1.0344354802676698E-6,
-   :std-dev 7.962058916121543E-9,
+   :lower-q 8.71810396825397E-7,
+   :upper-q 8.825859457671959E-7,
+   :std-dev 4.605934185199128E-9,
    :input ["text-black text-white"]}
   {:samples 6,
    :desc "10 classes, 2 conflicts",
-   :mean 6.324191091507736E-6,
+   :mean 5.570298697420968E-6,
    :name "Medium",
-   :variance 1.8086245111744437E-15,
+   :variance 1.4310085769306109E-15,
    :outliers
    {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
-   :lower-q 6.273602845250669E-6,
-   :upper-q 6.36365068025098E-6,
-   :std-dev 4.252792625057615E-8,
+   :lower-q 5.522201937073117E-6,
+   :upper-q 5.612968998432426E-6,
+   :std-dev 3.782867400439263E-8,
    :input
    ["p-2 m-4 text-lg"
     "hover:bg-blue-500 focus:ring-2"
     "p-4 text-xl text-white"]}
   {:samples 6,
    :desc "25 classes, 8 conflicts",
-   :mean 1.477791809565685E-5,
+   :mean 1.3757599715491923E-5,
    :name "Large",
-   :variance 7.763511072393256E-15,
+   :variance 1.1504534042552496E-13,
    :outliers
    {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
-   :lower-q 1.4660291074307491E-5,
-   :upper-q 1.4870004506815185E-5,
-   :std-dev 8.811078862655388E-8,
+   :lower-q 1.3381603524229075E-5,
+   :upper-q 1.421823365225771E-5,
+   :std-dev 3.391833433786585E-7,
    :input
    ["flex items-center justify-between p-4 m-2"
     "bg-white dark:bg-gray-800 rounded-lg shadow-md"
@@ -48,14 +48,14 @@
     "p-6 m-4 bg-gray-100 rounded-xl"]}
   {:samples 6,
    :desc "Complex modifier chains",
-   :mean 5.571353176816121E-6,
+   :mean 5.276779945656938E-6,
    :name "Modifiers",
-   :variance 3.3456295902303355E-15,
+   :variance 8.834197415163219E-16,
    :outliers
    {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
-   :lower-q 5.4935511933972785E-6,
-   :upper-q 5.6267232322105735E-6,
-   :std-dev 5.784141760218482E-8,
+   :lower-q 5.246908440704707E-6,
+   :upper-q 5.311847541414673E-6,
+   :std-dev 2.9722377790417812E-8,
    :input
    ["hover:focus:dark:lg:p-4"
     "[&>*]:underline [&>*]:line-through"
@@ -63,14 +63,14 @@
     "group-hover:peer-focus:text-red-500"]}
   {:samples 6,
    :desc "Arbitrary values + type labels",
-   :mean 5.635891661560742E-6,
+   :mean 5.426778569873749E-6,
    :name "Arbitrary",
-   :variance 1.1888759747302226E-14,
+   :variance 8.908172622763085E-16,
    :outliers
    {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
-   :lower-q 5.492213669024676E-6,
-   :upper-q 5.763219002395144E-6,
-   :std-dev 1.0903558936100738E-7,
+   :lower-q 5.391841314758381E-6,
+   :upper-q 5.465177146821942E-6,
+   :std-dev 2.9846561984193566E-8,
    :input
    ["m-[2px] m-[10px]"
     "text-[length:var(--size)] text-[color:red]"
@@ -78,14 +78,14 @@
     "font-[weight:var(--a)] font-[400]"]}
   {:samples 6,
    :desc "All classes preserved",
-   :mean 7.700093046020849E-6,
+   :mean 7.1695146891853545E-6,
    :name "No-conflicts",
-   :variance 7.508122870288828E-15,
+   :variance 1.2335360174407635E-15,
    :outliers
    {:low-severe 0, :low-mild 0, :high-mild 0, :high-severe 0},
-   :lower-q 7.600214874141876E-6,
-   :upper-q 7.816003155987796E-6,
-   :std-dev 8.664942510074045E-8,
+   :lower-q 7.120446281578201E-6,
+   :upper-q 7.206472484388306E-6,
+   :std-dev 3.512173141291248E-8,
    :input
    ["flex items-center gap-4"
     "text-lg font-medium text-gray-900"
