@@ -24,9 +24,6 @@
 (def ^:private ring-width-keywords
   #{"inset"})
 
-(def ^:private border-width-keywords
-  #{})
-
 (def ^:private decoration-thickness-keywords
   #{"auto" "from-font"})
 
@@ -111,8 +108,7 @@
   [^String s]
   (or (parse/arbitrary? s)
       (parse/variable? s)
-      (parse-long s)
-      (border-width-keywords s)))
+      (parse-long s)))
 
 (defn- decoration-thickness?
   [^String s]

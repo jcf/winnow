@@ -686,4 +686,7 @@
     :row      [:row-span]
     :row-span [:row]}
 
+   :postfix-conflicts
+   {:text-size [:leading]}
+
    :order-sensitive-modifiers ["*" "[" "group" "peer"]})

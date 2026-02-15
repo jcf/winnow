@@ -101,9 +101,9 @@
     (name group)))
 
 (defn- postfix-conflicts
-  [group postfix]
-  (when (and postfix (= group :text-size))
-    [:leading]))
+  [config group postfix]
+  (when postfix
+    (get-in config [:postfix-conflicts group])))
 
 (defn- strip-prefix
   [class-prefix raw]
@@ -129,7 +129,7 @@
              :group            group
              :id               (make-id mod-prefix group)
              :mod-prefix       mod-prefix
-             :extra-conflicts  (postfix-conflicts group (:postfix-at parsed))}))))))
+             :extra-conflicts  (postfix-conflicts config group (:postfix-at parsed))}))))))
 
 ;;; ----------------------------------------------------------------------------
 ;;; Merge algorithm
@@ -196,3 +196,29 @@
   {:exact    (set (keys (:exact config/default)))
    :prefixes (set (keys (:prefixes config/default)))
    :colors   (:colors config/default)})
+
+(defn normalize
+  "Normalizes input for resolve. Returns a vector of strings.
+
+  Handles:
+    nil                  -> []
+    \"string\"           -> [\"string\"]
+    [\"a\" nil \"b\"]    -> [\"a\" \"b\"]
+    [[\"a\"] \"b\" nil]  -> [\"a\" \"b\"]
+    (list \"a\" \"b\")   -> [\"a\" \"b\"]
+
+  Example:
+    (def tw (comp resolve normalize))
+    (tw nil)              ;; => \"\"
+    (tw \"p-4 m-2\")      ;; => \"p-4 m-2\"
+    (tw [\"p-4\" nil])    ;; => \"p-4\""
+  [input]
+  (cond
+    (nil? input)        []
+    (string? input)     [input]
+    (sequential? input) (into [] (mapcat normalize) input)
+    :else
+    (throw (ex-info (str "normalize supports nil, string, or sequential; got "
+                         (pr-str (type input)))
+                    {:input input
+                     :type  (type input)}))))

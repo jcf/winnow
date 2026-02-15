@@ -1,8 +1,8 @@
 (ns winnow.api-test
   (:refer-clojure :exclude [resolve])
   (:require
-   #?(:clj  [clojure.test :refer [deftest is]]
-      :cljs [cljs.test :refer-macros [deftest is]])
+   #?(:clj  [clojure.test :refer [are deftest is]]
+      :cljs [cljs.test :refer-macros [are deftest is]])
    [winnow.api :as sut]))
 
 (deftest resolve
@@ -34,3 +34,34 @@
   (let [resolve (sut/make-resolver {:prefix "tw:" :colors #{"primary"}})]
     (is (= "tw:hidden" (resolve ["tw:block tw:hidden"])))
     (is (= "tw:bg-primary" (resolve ["tw:bg-red tw:bg-primary"])))))
+
+(deftest postfix-conflicts
+  (is (= "text-xl/8" (sut/resolve ["leading-6" "text-xl/8"]))
+      "text size with line-height postfix conflicts with leading")
+  (is (= "leading-6 text-xl" (sut/resolve ["leading-6" "text-xl"]))
+      "text size without postfix does not conflict with leading"))
+
+(deftest normalize
+  (are [in out] (= out (sut/normalize in))
+    nil                     []
+    "p-4"                   ["p-4"]
+    "p-4 m-2"               ["p-4 m-2"]
+    ["p-4" "m-2"]           ["p-4" "m-2"]
+    ["p-4" nil "m-2"]       ["p-4" "m-2"]
+    [["a"] "b" ["c"]]       ["a" "b" "c"]
+    [["a" nil] nil "b"]     ["a" "b"]
+    '("a" "b")              ["a" "b"]
+    [[["a"]]]               ["a"]
+    [nil nil nil]           [])
+  (is (thrown? #?(:clj clojure.lang.ExceptionInfo :cljs js/Error)
+               (sut/normalize 42)))
+  (is (thrown? #?(:clj clojure.lang.ExceptionInfo :cljs js/Error)
+               (sut/normalize {:class "p-4"}))))
+
+(deftest normalize-with-resolve
+  (let [tw (comp sut/resolve sut/normalize)]
+    (are [in out] (= out (tw in))
+      nil                     ""
+      "p-4"                   "p-4"
+      ["p-2" nil "p-4"]       "p-4"
+      [["p-4"] "m-2"]         "p-4 m-2")))
