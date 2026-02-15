@@ -1,6 +1,11 @@
 {pkgs, ...}: {
   claude.code.enable = true;
 
+  env = {
+    CLOJARS_USERNAME = "jcf";
+    CLOJARS_PASSWORD = "op://Employee/Clojars/deploy-token-jcf.dev";
+  };
+
   packages = with pkgs; [
     # Clojure
     babashka

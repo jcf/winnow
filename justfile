@@ -71,3 +71,27 @@ hygiene:
 [group('docs')]
 docs:
     clojure -M:dev -m winnow.doc > doc/supported-classes.org
+
+# Tag and deploy a release to Clojars
+[group('release')]
+release version:
+    #!/usr/bin/env zsh
+    set -e
+    if [[ -n $(git status --porcelain) ]]; then
+        echo "Error: uncommitted changes" >&2
+        exit 1
+    fi
+    just
+    git tag -a "v{{ version }}" -m "Release {{ version }}"
+    git push --tags
+    clojure -T:build deploy :version '"{{ version }}"'
+
+# Build JAR locally
+[group('release')]
+build version:
+    clojure -T:build jar :version '"{{ version }}"'
+
+# Install to local Maven repo
+[group('release')]
+install version:
+    clojure -T:build install :version '"{{ version }}"'

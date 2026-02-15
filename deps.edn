@@ -18,8 +18,8 @@
    :extra-paths ["test" "test-resources"]}
 
   :runner
-  {:extra-deps  {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
-   :main-opts   ["-m" "kaocha.runner"]}
+  {:extra-deps {lambdaisland/kaocha {:mvn/version "1.91.1392"}}
+   :main-opts  ["-m" "kaocha.runner"]}
 
   :bench
   {:extra-deps  {criterium/criterium {:mvn/version "0.4.6"}}
@@ -30,5 +30,6 @@
    :extra-paths ["bench" "test-resources"]}
 
   :build
-  {:deps       {io.github.clojure/tools.build {:mvn/version "0.10.7"}}
+  {:deps       {io.github.clojure/tools.build {:mvn/version "0.10.7"}
+                slipset/deps-deploy           {:mvn/version "0.2.2"}}
    :ns-default build}}}
