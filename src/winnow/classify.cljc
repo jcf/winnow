@@ -1,6 +1,7 @@
 (ns winnow.classify
   (:require
    [clojure.string :as str]
+   [winnow.parse :as parse]
    [winnow.trie :as trie]))
 
 ;;; ----------------------------------------------------------------------------
@@ -32,26 +33,9 @@
 ;;; ----------------------------------------------------------------------------
 ;;; Value type predicates
 
-(defn- arbitrary?
-  [s]
-  (and (>= (count s) 2)
-       (str/starts-with? s "[")
-       (str/ends-with? s "]")))
-
-(defn- variable?
-  [s]
-  (and (>= (count s) 2)
-       (str/starts-with? s "(")
-       (str/ends-with? s ")")))
-
-(defn- content
-  [s]
-  (when (or (arbitrary? s) (variable? s))
-    (subs s 1 (dec (count s)))))
-
 (defn- type-hint
   [s]
-  (when-let [c (content s)]
+  (when-let [c (parse/bracketed-content s)]
     (when-let [idx (str/index-of c ":")]
       (when (pos? (long idx))
         (let [prefix (subs c 0 idx)]
@@ -75,7 +59,7 @@
 
 (defn- strip-postfix
   [^String s]
-  (if (or (arbitrary? s) (variable? s))
+  (if (or (parse/arbitrary? s) (parse/variable? s))
     s
     (if-let [idx (str/index-of s "/")]
       (subs s 0 idx)
@@ -83,51 +67,57 @@
 
 (defn- contains-digit?
   [^String s]
-  #?(:clj  (some #(Character/isDigit ^char %) s)
+  #?(:clj  (let [len (parse/str-len s)]
+             (loop [i 0]
+               (if (< i len)
+                 (if (Character/isDigit ^char (parse/char-at s i))
+                   true
+                   (recur (inc i)))
+                 false)))
      :cljs (boolean (re-find #"\d" s))))
 
 (defn- text-size?
   [text-sizes ^String s]
   (let [s (strip-postfix s)]
-    (or (arbitrary? s)
-        (variable? s)
+    (or (parse/arbitrary? s)
+        (parse/variable? s)
         (contains-digit? s)
         (text-size-keywords s)
         (text-sizes s))))
 
 (defn- font-weight?
   [^String s]
-  (or (arbitrary? s)
-      (variable? s)
+  (or (parse/arbitrary? s)
+      (parse/variable? s)
       (parse-long s)
       (font-weight-keywords s)))
 
 (defn- shadow-size?
   [^String s]
   (let [s (strip-postfix s)]
-    (or (arbitrary? s)
-        (variable? s)
+    (or (parse/arbitrary? s)
+        (parse/variable? s)
         (contains-digit? s)
         (shadow-size-keywords s))))
 
 (defn- ring-width?
   [^String s]
-  (or (arbitrary? s)
-      (variable? s)
+  (or (parse/arbitrary? s)
+      (parse/variable? s)
       (parse-long s)
       (ring-width-keywords s)))
 
 (defn- border-width?
   [^String s]
-  (or (arbitrary? s)
-      (variable? s)
+  (or (parse/arbitrary? s)
+      (parse/variable? s)
       (parse-long s)
       (border-width-keywords s)))
 
 (defn- decoration-thickness?
   [^String s]
-  (or (arbitrary? s)
-      (variable? s)
+  (or (parse/arbitrary? s)
+      (parse/variable? s)
       (parse-long s)
       (decoration-thickness-keywords s)))
 
@@ -140,28 +130,28 @@
 
 (defn- hex-color?
   [s]
-  (when (arbitrary? s)
-    (when-let [c (content s)]
+  (when (parse/arbitrary? s)
+    (when-let [c (parse/bracketed-content s)]
       (re-matches #"^#[0-9a-fA-F]{3,8}$" c))))
 
 (defn- color?
   [colors s]
   (or (color-name? colors s)
       (hex-color? s)
-      (and (arbitrary? s) (= "color" (type-hint s)))
-      (and (variable? s) (= "color" (type-hint s)))))
+      (and (parse/arbitrary? s) (= "color" (type-hint s)))
+      (and (parse/variable? s) (= "color" (type-hint s)))))
 
 (defn- color-or-var?
   [colors s]
   (or (color? colors s)
-      (and (variable? s) (nil? (type-hint s)))))
+      (and (parse/variable? s) (nil? (type-hint s)))))
 
 ;;; ----------------------------------------------------------------------------
 ;;; Other validators
 
 (defn- image-value?
   [s]
-  (when-let [c (content s)]
+  (when-let [c (parse/bracketed-content s)]
     (or (str/starts-with? c "url(")
         (str/starts-with? c "linear-gradient(")
         (str/starts-with? c "radial-gradient(")
@@ -170,12 +160,12 @@
 (defn- type-hint-match?
   [hints ^String value]
   (when-let [hint (or (type-hint value)
-                      (when (variable? value) "any"))]
+                      (when (parse/variable? value) "any"))]
     (contains? hints hint)))
 
 (defn- percent?
   [s]
-  (let [s (if (arbitrary? s) (content s) s)]
+  (let [s (if (parse/arbitrary? s) (parse/bracketed-content s) s)]
     (and (str/ends-with? s "%")
          (parse-double (subs s 0 (dec (count s)))))))
 
@@ -211,7 +201,7 @@
 
 (defn- arbitrary-property-group
   [s]
-  (when (arbitrary? s)
+  (when (parse/arbitrary? s)
     (when-let [hint (type-hint s)]
       (keyword (str "arbitrary--" hint)))))
 

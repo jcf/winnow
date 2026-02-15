@@ -59,18 +59,37 @@
   (some #(str/starts-with? modifier %) prefixes))
 
 (defn- sort-modifiers
+  "Sorts modifiers alphabetically while preserving positions of order-sensitive
+  modifiers (group-*, peer-*, [*], *:)."
   [modifiers order-sensitive]
-  (let [sensitive? #(order-sensitive? order-sensitive %)
-        sorted     (vec (sort (into [] (remove sensitive?) modifiers)))]
-    (loop [i      0
-           j      0
-           result (transient [])]
-      (if (< i (count modifiers))
-        (let [m (nth modifiers i)]
-          (if (sensitive? m)
-            (recur (inc i) j (conj! result m))
-            (recur (inc i) (inc j) (conj! result (nth sorted j)))))
-        (persistent! result)))))
+  (let [sensitive?    #(order-sensitive? order-sensitive %)
+        ;; Single pass: collect sortable items and track sensitive positions
+        [sortable sensitive-positions]
+        (loop [i       0
+               sort-v  (transient [])
+               sens-s  (transient #{})]
+          (if (< i (count modifiers))
+            (let [m (nth modifiers i)]
+              (if (sensitive? m)
+                (recur (inc i) sort-v (conj! sens-s i))
+                (recur (inc i) (conj! sort-v m) sens-s)))
+            [(persistent! sort-v) (persistent! sens-s)]))]
+    (if (empty? sensitive-positions)
+      ;; Fast path: no sensitive modifiers, just sort
+      (vec (sort sortable))
+      (if (empty? sortable)
+        ;; Fast path: all sensitive, preserve order
+        modifiers
+        ;; Interleave sorted values at non-sensitive positions
+        (let [sorted (vec (sort sortable))]
+          (loop [i      0
+                 j      0
+                 result (transient [])]
+            (if (< i (count modifiers))
+              (if (contains? sensitive-positions i)
+                (recur (inc i) j (conj! result (nth modifiers i)))
+                (recur (inc i) (inc j) (conj! result (nth sorted j))))
+              (persistent! result))))))))
 
 ;;; ----------------------------------------------------------------------------
 ;;; Class processing
@@ -115,6 +134,10 @@
 ;;; ----------------------------------------------------------------------------
 ;;; Merge algorithm
 
+(defn- add-conflicts!
+  [seen mod-prefix conflicts]
+  (reduce (fn [s c] (conj! s (make-id mod-prefix c))) seen conflicts))
+
 (defn- merge-classes
   [config classes]
   (let [processed (into []
@@ -122,22 +145,24 @@
                               (map #(or (process-class config %)
                                         {:raw % :group nil})))
                         classes)]
-    (loop [i      (dec (count processed))
-           seen   #{}
-           result '()]
-      (if (neg? i)
-        result
-        (let [{:keys [raw group id mod-prefix extra-conflicts]} (nth processed i)]
-          (if (nil? group)
-            (recur (dec i) seen (conj result raw))
-            (if (seen id)
-              (recur (dec i) seen result)
-              (let [conflicts (into (get-in config [:conflicts group] [])
-                                    extra-conflicts)
-                    new-seen  (into (conj seen id)
-                                    (map #(make-id mod-prefix %))
-                                    conflicts)]
-                (recur (dec i) new-seen (conj result raw))))))))))
+    (first
+     (reduce
+      (fn [[result seen] {:keys [raw group id mod-prefix extra-conflicts]}]
+        (cond
+          (nil? group)
+          [(conj result raw) seen]
+
+          (contains? seen id)
+          [result seen]
+
+          :else
+          (let [conflicts (get-in config [:conflicts group])
+                seen'     (-> (conj! seen id)
+                              (add-conflicts! mod-prefix conflicts)
+                              (add-conflicts! mod-prefix extra-conflicts))]
+            [(conj result raw) seen'])))
+      ['() (transient #{})]
+      (rseq processed)))))
 
 ;;; ----------------------------------------------------------------------------
 ;;; Public API

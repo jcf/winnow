@@ -25,10 +25,26 @@ test *args:
 conform:
     cd conformance && pnpm test
 
-# Run benchmarks
-[group('test')]
+# Run benchmarks (EDN output for comparison)
+[group('bench')]
 bench:
     clojure -M:dev:bench -m winnow.bench
+
+# Run benchmarks (human-readable output)
+[group('bench')]
+bench-pretty:
+    clojure -M:dev:bench -m winnow.bench --pretty
+
+# Compare two benchmark files
+[group('bench')]
+bench-compare before after:
+    clojure -M:dev:bench -m winnow.bench-compare {{ before }} {{ after }}
+
+# Save baseline benchmark
+[group('bench')]
+bench-baseline:
+    clojure -M:dev:bench -m winnow.bench > bench/baseline.edn
+    @echo "Saved to bench/baseline.edn"
 
 # Compare tailwind-merge-clj conformance
 [group('test')]

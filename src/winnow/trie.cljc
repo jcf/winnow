@@ -1,12 +1,6 @@
-(ns winnow.trie)
-
-(defn- char-at [s i]
-  #?(:clj  (.charAt ^String s i)
-     :cljs (nth s i)))
-
-(defn- str-len ^long [s]
-  #?(:clj  (.length ^String s)
-     :cljs (count s)))
+(ns winnow.trie
+  (:require
+   [winnow.parse :as parse]))
 
 ;;; ----------------------------------------------------------------------------
 ;;; Prefix Trie
@@ -24,12 +18,12 @@
   "Find longest matching prefix in trie, return [prefix-end-idx config] or nil.
    Only matches at dash boundaries."
   [trie s]
-  (let [len (str-len s)]
+  (let [len (parse/str-len s)]
     (loop [i 0, node trie, match nil]
       (if (>= i len)
         ;; End of string - only match if we're at a valid boundary
         match
-        (let [c (char-at s i)]
+        (let [c (parse/char-at s i)]
           (if (= c \-)
             ;; At dash boundary, record match if node has value, then continue
             (let [new-match (if-let [v (:value node)] [i v] match)]

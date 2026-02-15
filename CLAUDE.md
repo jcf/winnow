@@ -37,8 +37,10 @@ test/winnow/
 doc/
   supported-classes.org  # Generated reference of all supported patterns
 
-spec/winnow.txt          # Conformance test cases
-bench/winnow/bench.clj   # Criterium benchmarks
+spec/winnow.txt               # Conformance test cases
+bench/winnow/bench.clj        # Criterium benchmarks (EDN output)
+bench/winnow/bench_compare.clj # Benchmark comparison tooling
+bench/baseline.edn            # Baseline benchmark results
 ```
 
 ## Code Conventions
@@ -107,6 +109,26 @@ just lint  # clj-kondo
 ```
 
 clj-kondo config: `.clj-kondo/config.edn`
+
+## Benchmarking
+
+Benchmarks use Criterium and output machine-readable EDN with metadata (commit, timestamp, JVM version).
+
+```sh
+just bench            # Run benchmarks, output EDN to stdout
+just bench-pretty     # Human-readable output
+just bench-baseline   # Save baseline to bench/baseline.edn
+just bench-compare before.edn after.edn  # Compare two benchmark files
+```
+
+Workflow for measuring optimizations:
+
+```sh
+just bench-baseline              # Save current performance
+# ... make changes ...
+just bench > bench/after.edn     # Measure new performance
+just bench-compare bench/baseline.edn bench/after.edn
+```
 
 ## Key Files
 

@@ -1,6 +1,7 @@
 (ns winnow.config
   (:require
-   [clojure.string :as str]))
+   [clojure.string :as str]
+   [winnow.parse :as parse]))
 
 (def ^:private length-units
   #{"%"  "ch" "cm" "cqb" "cqh" "cqi" "cqmax" "cqmin" "cqw" "dvh" "dvw"
@@ -11,21 +12,11 @@
   [s]
   (some #(str/ends-with? s %) length-units))
 
-(defn- arbitrary?
-  [s]
-  (and (>= (count s) 2)
-       (str/starts-with? s "[")
-       (str/ends-with? s "]")))
-
-(defn- content
-  [s]
-  (subs s 1 (dec (count s))))
-
-(defn stroke-width?
+(defn- stroke-width?
   [s]
   (or (parse-long s)
-      (and (arbitrary? s)
-           (let [c (content s)]
+      (and (parse/arbitrary? s)
+           (let [c (parse/arbitrary-content s)]
              (or (ends-with-unit? c)
                  (parse-double c))))))
 

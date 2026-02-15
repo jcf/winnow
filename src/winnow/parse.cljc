@@ -2,13 +2,47 @@
   (:require
    [clojure.string :as str]))
 
-(defn- char-at [s i]
+;;; ----------------------------------------------------------------------------
+;;; String primitives
+
+(defn char-at
+  [s i]
   #?(:clj  (.charAt ^String s i)
      :cljs (nth s i)))
 
-(defn- str-len ^long [s]
+(defn str-len
+  ^long [s]
   #?(:clj  (.length ^String s)
      :cljs (count s)))
+
+;;; ----------------------------------------------------------------------------
+;;; Bracket syntax detection
+
+(defn arbitrary?
+  [s]
+  (and (>= (count s) 2)
+       (str/starts-with? s "[")
+       (str/ends-with? s "]")))
+
+(defn variable?
+  [s]
+  (and (>= (count s) 2)
+       (str/starts-with? s "(")
+       (str/ends-with? s ")")))
+
+(defn bracketed-content
+  [s]
+  (when (and (>= (count s) 2)
+             (or (arbitrary? s) (variable? s)))
+    (subs s 1 (dec (count s)))))
+
+(defn arbitrary-content
+  [s]
+  (when (arbitrary? s)
+    (subs s 1 (dec (count s)))))
+
+;;; ----------------------------------------------------------------------------
+;;; Internal parsing helpers
 
 (defn- find-splits
   [s]
