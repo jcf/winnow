@@ -2,6 +2,9 @@
 #+author: James Conroy-Finn
 #+startup: content
 
+[[https://github.com/jcf/winnow/actions][https://github.com/jcf/winnow/actions/workflows/ci.yml/badge.svg]]
+[[https://clojars.org/dev.jcf/winnow][https://img.shields.io/clojars/v/dev.jcf/winnow.svg]]
+
 Tailwind CSS class merging for Clojure, ClojureScript, and Babashka.
 
 * What It Does
