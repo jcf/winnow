@@ -84,7 +84,7 @@ release version:
     just
     git tag -a "v{{ version }}" -m "Release {{ version }}"
     git push --tags
-    clojure -T:build deploy :version '"{{ version }}"'
+    op run -- clojure -T:build deploy :version '"{{ version }}"'
 
 # Build JAR locally
 [group('release')]
