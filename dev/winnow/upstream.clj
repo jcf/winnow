@@ -11,7 +11,7 @@
   "https://raw.githubusercontent.com/tailwindlabs/tailwindcss/main/packages/tailwindcss/src/utilities.ts")
 
 (def ^:private baseline-file
-  "resources/winnow/tailwind-utilities.edn")
+  "dev-resources/winnow/tailwind-utilities.edn")
 
 (def ^:private patterns
   [#"staticUtility\(['\"]([^'\"]+)['\"]"

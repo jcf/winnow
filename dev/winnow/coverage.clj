@@ -13,7 +13,7 @@
 ;;; Data loading
 
 (def ^:private baseline-file
-  "resources/winnow/tailwind-utilities.edn")
+  "dev-resources/winnow/tailwind-utilities.edn")
 
 (defn load-upstream
   []
