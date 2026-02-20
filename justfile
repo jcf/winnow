@@ -72,6 +72,21 @@ hygiene:
 docs:
     clojure -M:dev -m winnow.doc > doc/supported-classes.org
 
+# Check for upstream Tailwind changes
+[group('upstream')]
+upstream-check:
+    clojure -M:dev -m winnow.upstream check
+
+# Update baseline from Tailwind CSS
+[group('upstream')]
+upstream-update:
+    clojure -M:dev -m winnow.upstream update
+
+# Analyze coverage of upstream utilities
+[group('upstream')]
+upstream-coverage:
+    clojure -M:dev -m winnow.coverage analyze
+
 # Tag and deploy a release to Clojars
 [group('release')]
 release version:
