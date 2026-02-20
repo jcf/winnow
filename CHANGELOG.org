@@ -1,0 +1,22 @@
+#+title: Changelog
+
+* v1.1.0 (2026-02-20)
+** Added
+- 25 new utilities for 99.9% upstream Tailwind coverage (666 patterns total)
+- Background position utilities: =bg-center=, =bg-top=, =bg-bottom=, etc.
+- Outline style utilities: =outline-solid=, =outline-dashed=, =outline-none=, etc.
+- =ring-offset=, =outline-offset=, =bg-position=, =bg-size= prefixes
+- =fill-none=, =stroke-none=, =via-none=, =ring-inset=, =decoration-auto=, =decoration-from-font=
+- Daily CI job to detect upstream Tailwind CSS changes
+
+** Changed
+- Generative tests now use data-driven generators derived from config
+
+* v1.0.0 (2026-02-15)
+Initial stable release.
+
+- 445 patterns covering Tailwind CSS v4.x utilities
+- Support for arbitrary values, CSS variables, modifiers, negative values
+- =resolve=, =make-resolver=, =normalize=, =supported-patterns= API
+- Cross-platform: Clojure, ClojureScript, Babashka
+- 340 conformance tests derived from tailwind-merge
