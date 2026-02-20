@@ -96,6 +96,7 @@
     "no-underline" :text-decoration
 
     "ring"       :ring-w
+    "ring-inset" :ring-w
     "shadow"     :shadow
     "inset-ring" :inset-ring-w
     "grow"       :grow
@@ -125,6 +126,33 @@
     "transform-3d"   :transform-style
     "transform-flat" :transform-style
 
+    "transform-none"    :transform
+    "transform-gpu"     :transform
+    "transform-cpu"     :transform
+    "transform-content" :transform-box
+    "transform-border"  :transform-box
+    "transform-fill"    :transform-box
+    "transform-stroke"  :transform-box
+    "transform-view"    :transform-box
+
+    "translate-none"  :translate
+    "translate-3d"    :translate
+    "translate-full"  :translate
+    "-translate-full" :translate
+
+    "filter"          :filter
+    "backdrop-filter" :backdrop-filter
+
+    "container"           :container
+    "contain-none"        :contain
+    "contain-content"     :contain
+    "contain-strict"      :contain
+    "contain-size"        :contain
+    "contain-inline-size" :contain
+    "contain-layout"      :contain
+    "contain-paint"       :contain
+    "contain-style"       :contain
+
     "rotate-none"      :rotate
     "text-shadow"      :text-shadow
     "text-shadow-none" :text-shadow
@@ -140,16 +168,67 @@
     "mask-intersect" :mask-composite
     "mask-exclude"   :mask-composite
 
-    "bg-auto"    :bg-size
-    "bg-cover"   :bg-size
-    "bg-contain" :bg-size
-    "bg-none"    :bg-image
+    "mask-none"           :mask
+    "mask-alpha"          :mask-mode
+    "mask-luminance"      :mask-mode
+    "mask-match"          :mask-mode
+    "mask-auto"           :mask-size
+    "mask-cover"          :mask-size
+    "mask-contain"        :mask-size
+    "mask-center"         :mask-position
+    "mask-top"            :mask-position
+    "mask-top-right"      :mask-position
+    "mask-right"          :mask-position
+    "mask-bottom-right"   :mask-position
+    "mask-bottom"         :mask-position
+    "mask-bottom-left"    :mask-position
+    "mask-left"           :mask-position
+    "mask-top-left"       :mask-position
+    "mask-repeat"         :mask-repeat
+    "mask-no-repeat"      :mask-repeat
+    "mask-repeat-x"       :mask-repeat
+    "mask-repeat-y"       :mask-repeat
+    "mask-repeat-round"   :mask-repeat
+    "mask-repeat-space"   :mask-repeat
+    "mask-clip-content"   :mask-clip
+    "mask-clip-padding"   :mask-clip
+    "mask-clip-border"    :mask-clip
+    "mask-clip-fill"      :mask-clip
+    "mask-clip-stroke"    :mask-clip
+    "mask-clip-view"      :mask-clip
+    "mask-no-clip"        :mask-clip
+    "mask-origin-content" :mask-origin
+    "mask-origin-padding" :mask-origin
+    "mask-origin-border"  :mask-origin
+    "mask-origin-fill"    :mask-origin
+    "mask-origin-stroke"  :mask-origin
+    "mask-origin-view"    :mask-origin
+    "mask-circle"         :mask-shape
+    "mask-ellipse"        :mask-shape
+
+    "bg-auto"         :bg-size
+    "bg-cover"        :bg-size
+    "bg-contain"      :bg-size
+    "bg-none"         :bg-image
+    "via-none"        :gradient-via
+    "bg-bottom"       :bg-position
+    "bg-bottom-left"  :bg-position
+    "bg-bottom-right" :bg-position
+    "bg-center"       :bg-position
+    "bg-left"         :bg-position
+    "bg-right"        :bg-position
+    "bg-top"          :bg-position
+    "bg-top-left"     :bg-position
+    "bg-top-right"    :bg-position
 
     "object-contain"    :object-fit
     "object-cover"      :object-fit
     "object-fill"       :object-fit
     "object-none"       :object-fit
     "object-scale-down" :object-fit
+
+    "fill-none"   :fill
+    "stroke-none" :stroke-color
 
     "overflow-clip"    :overflow
     "overflow-visible" :overflow
@@ -323,6 +402,13 @@
     "divide-double" :divide-style
     "divide-none"   :divide-style
 
+    "outline-solid"  :outline-style
+    "outline-dashed" :outline-style
+    "outline-dotted" :outline-style
+    "outline-double" :outline-style
+    "outline-none"   :outline-style
+    "outline-hidden" :outline-style
+
     "border-collapse" :border-collapse
     "border-separate" :border-collapse
 
@@ -352,11 +438,13 @@
     "box-border"  :box-sizing
     "box-content" :box-sizing
 
-    "decoration-solid"  :decoration-style
-    "decoration-double" :decoration-style
-    "decoration-dotted" :decoration-style
-    "decoration-dashed" :decoration-style
-    "decoration-wavy"   :decoration-style
+    "decoration-solid"     :decoration-style
+    "decoration-double"    :decoration-style
+    "decoration-dotted"    :decoration-style
+    "decoration-dashed"    :decoration-style
+    "decoration-wavy"      :decoration-style
+    "decoration-auto"      :decoration-thickness
+    "decoration-from-font" :decoration-thickness
 
     "inert" :inert}
 
@@ -449,8 +537,10 @@
     "gap-y" {:group :gap-y}
 
     "space-x"         {:group :space-x}
+    "-space-x"        {:group :space-x}
     "space-x-reverse" {:group :space-x}
     "space-y"         {:group :space-y}
+    "-space-y"        {:group :space-y}
     "space-y-reverse" {:group :space-y}
 
     "divide-x"         {:group :divide-x}
@@ -465,17 +555,28 @@
 
     "object" {:group :object-position}
 
-    "scroll-m"   {:group :scroll-m}
-    "scroll-mx"  {:group :scroll-mx}
-    "scroll-my"  {:group :scroll-my}
-    "scroll-ms"  {:group :scroll-ms}
-    "scroll-me"  {:group :scroll-me}
-    "scroll-mbs" {:group :scroll-mbs}
-    "scroll-mbe" {:group :scroll-mbe}
-    "scroll-mt"  {:group :scroll-mt}
-    "scroll-mr"  {:group :scroll-mr}
-    "scroll-mb"  {:group :scroll-mb}
-    "scroll-ml"  {:group :scroll-ml}
+    "scroll-m"    {:group :scroll-m}
+    "-scroll-m"   {:group :scroll-m}
+    "scroll-mx"   {:group :scroll-mx}
+    "-scroll-mx"  {:group :scroll-mx}
+    "scroll-my"   {:group :scroll-my}
+    "-scroll-my"  {:group :scroll-my}
+    "scroll-ms"   {:group :scroll-ms}
+    "-scroll-ms"  {:group :scroll-ms}
+    "scroll-me"   {:group :scroll-me}
+    "-scroll-me"  {:group :scroll-me}
+    "scroll-mbs"  {:group :scroll-mbs}
+    "-scroll-mbs" {:group :scroll-mbs}
+    "scroll-mbe"  {:group :scroll-mbe}
+    "-scroll-mbe" {:group :scroll-mbe}
+    "scroll-mt"   {:group :scroll-mt}
+    "-scroll-mt"  {:group :scroll-mt}
+    "scroll-mr"   {:group :scroll-mr}
+    "-scroll-mr"  {:group :scroll-mr}
+    "scroll-mb"   {:group :scroll-mb}
+    "-scroll-mb"  {:group :scroll-mb}
+    "scroll-ml"   {:group :scroll-ml}
+    "-scroll-ml"  {:group :scroll-ml}
 
     "scroll-p"   {:group :scroll-p}
     "scroll-px"  {:group :scroll-px}
@@ -537,13 +638,17 @@
     "overflow-x" {:group :overflow-x}
     "overflow-y" {:group :overflow-y}
 
-    "bg"        {:validators [[:color-or-var :bg-color]
-                              [:position :bg-position]
-                              [:image :bg-image]
-                              [:length :bg-size]]}
-    "bg-linear" {:group :gradient}
-    "bg-radial" {:group :gradient}
-    "bg-conic"  {:group :gradient}
+    "bg"          {:validators [[:color-or-var :bg-color]
+                                [:position :bg-position]
+                                [:image :bg-image]
+                                [:length :bg-size]]}
+    "bg-position" {:group :bg-position}
+    "bg-size"     {:group :bg-size}
+    "bg-linear"   {:group :gradient}
+    "-bg-linear" {:group :gradient}
+    "bg-radial"  {:group :gradient}
+    "bg-conic"   {:group :gradient}
+    "-bg-conic"  {:group :gradient}
     "from"      {:validators [[:number :gradient-from-pos]
                               [:percent :gradient-from-pos]
                               [:length :gradient-from-pos]
@@ -560,10 +665,11 @@
                               [:position :gradient-to-pos]
                               [:color-or-var :gradient-to]]}
 
-    "ring"       {:validators [[:color :ring-color]
-                               [:ring-width :ring-w]]}
-    "inset-ring" {:validators [[:color :inset-ring-color]
-                               [:ring-width :inset-ring-w]]}
+    "ring"        {:validators [[:color :ring-color]
+                                [:ring-width :ring-w]]}
+    "inset-ring"  {:validators [[:color :inset-ring-color]
+                                [:ring-width :inset-ring-w]]}
+    "ring-offset" {:group :ring-offset}
 
     "shadow"      {:validators [[:color :shadow-color]
                                 [:shadow-size :shadow]]}
@@ -576,8 +682,9 @@
 
     "stroke"  {:validators [[:stroke-width :stroke-w]
                             [:color-or-var :stroke-color]]}
-    "outline" {:validators [[:integer :outline-w]
-                            [:color-or-var :outline-color]]}
+    "outline"        {:validators [[:integer :outline-w]
+                                  [:color-or-var :outline-color]]}
+    "outline-offset" {:group :outline-offset}
 
     "border"   {:validators [[:color :border-color]
                              [:border-width :border-w]]}
@@ -612,13 +719,19 @@
     "grayscale" {:group :grayscale}
     "opacity"   {:group :opacity}
     "scale"     {:group :scale}
+    "-scale"    {:group :scale}
 
-    "rotate"   {:group :rotate}
-    "-rotate"  {:group :rotate}
-    "rotate-x" {:group :rotate-x}
-    "rotate-y" {:group :rotate-y}
-    "rotate-z" {:group :rotate-z}
+    "rotate"    {:group :rotate}
+    "-rotate"   {:group :rotate}
+    "rotate-x"  {:group :rotate-x}
+    "-rotate-x" {:group :rotate-x}
+    "rotate-y"  {:group :rotate-y}
+    "-rotate-y" {:group :rotate-y}
+    "rotate-z"  {:group :rotate-z}
+    "-rotate-z" {:group :rotate-z}
 
+    "translate"    {:group :translate}
+    "-translate"   {:group :translate}
     "translate-x"  {:group :translate-x}
     "-translate-x" {:group :translate-x}
     "translate-y"  {:group :translate-y}
@@ -626,14 +739,21 @@
     "translate-z"  {:group :translate-z}
     "-translate-z" {:group :translate-z}
 
+    "skew"    {:group :skew}
+    "-skew"   {:group :skew}
     "skew-x"  {:group :skew-x}
     "-skew-x" {:group :skew-x}
     "skew-y"  {:group :skew-y}
     "-skew-y" {:group :skew-y}
 
-    "scale-x" {:group :scale-x}
-    "scale-y" {:group :scale-y}
-    "scale-z" {:group :scale-z}
+    "origin" {:group :transform-origin}
+
+    "scale-x"  {:group :scale-x}
+    "-scale-x" {:group :scale-x}
+    "scale-y"  {:group :scale-y}
+    "-scale-y" {:group :scale-y}
+    "scale-z"  {:group :scale-z}
+    "-scale-z" {:group :scale-z}
 
     "perspective"        {:group :perspective}
     "perspective-origin" {:group :perspective-origin}
@@ -649,10 +769,19 @@
     "font-stretch"  {:group :font-stretch}
     "font-features" {:group :font-features}
 
-    "cursor" {:group :cursor}
-    "select" {:group :select}
-    "order"  {:group :order}
-    "-order" {:group :order}
+    "cursor"        {:group :cursor}
+    "select"        {:group :select}
+    "order"         {:group :order}
+    "-order"        {:group :order}
+    "list"          {:group :list-style-type}
+    "align"         {:group :vertical-align}
+    "transition"    {:group :transition}
+    "will-change"   {:group :will-change}
+    "transform"     {:group :transform}
+    "contain"       {:group :contain}
+    "mask"          {:group :mask}
+    "mask-position" {:group :mask-position}
+    "mask-size"     {:group :mask-size}
 
     "rounded"    {:group :rounded}
     "rounded-t"  {:group :rounded-t}
