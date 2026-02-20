@@ -34,7 +34,10 @@
      "indigo"
      "inherit"
      "lime"
+     "mauve"
+     "mist"
      "neutral"
+     "olive"
      "orange"
      "pink"
      "purple"
@@ -43,6 +46,7 @@
      "sky"
      "slate"
      "stone"
+     "taupe"
      "teal"
      "transparent"
      "violet"
@@ -54,17 +58,27 @@
    {:stroke-width stroke-width?}
 
    :exact
-   {"block"        :display
-    "inline-block" :display
-    "inline"       :display
-    "flex"         :display
-    "inline-flex"  :display
-    "grid"         :display
-    "inline-grid"  :display
-    "hidden"       :display
-    "contents"     :display
-    "flow-root"    :display
-    "list-item"    :display
+   {"block"              :display
+    "inline-block"      :display
+    "inline"            :display
+    "flex"              :display
+    "inline-flex"       :display
+    "table"             :display
+    "inline-table"      :display
+    "table-caption"     :display
+    "table-cell"        :display
+    "table-column"      :display
+    "table-column-group" :display
+    "table-footer-group" :display
+    "table-header-group" :display
+    "table-row-group"   :display
+    "table-row"         :display
+    "flow-root"         :display
+    "grid"              :display
+    "inline-grid"       :display
+    "contents"          :display
+    "list-item"         :display
+    "hidden"            :display
 
     "visible"   :visibility
     "invisible" :visibility
@@ -143,9 +157,15 @@
     "overflow-auto"    :overflow
     "overflow-hidden"  :overflow
 
-    "overscroll-auto"    :overscroll
-    "overscroll-contain" :overscroll
-    "overscroll-none"    :overscroll
+    "overscroll-auto"      :overscroll
+    "overscroll-contain"   :overscroll
+    "overscroll-none"      :overscroll
+    "overscroll-x-auto"    :overscroll-x
+    "overscroll-x-contain" :overscroll-x
+    "overscroll-x-none"    :overscroll-x
+    "overscroll-y-auto"    :overscroll-y
+    "overscroll-y-contain" :overscroll-y
+    "overscroll-y-none"    :overscroll-y
 
     "scroll-auto"   :scroll-behavior
     "scroll-smooth" :scroll-behavior
@@ -214,6 +234,30 @@
 
     "backface-visible" :backface
     "backface-hidden"  :backface
+
+    "break-after-auto"        :break-after
+    "break-after-avoid"       :break-after
+    "break-after-all"         :break-after
+    "break-after-avoid-page"  :break-after
+    "break-after-page"        :break-after
+    "break-after-left"        :break-after
+    "break-after-right"       :break-after
+    "break-after-column"      :break-after
+    "break-before-auto"       :break-before
+    "break-before-avoid"      :break-before
+    "break-before-all"        :break-before
+    "break-before-avoid-page" :break-before
+    "break-before-page"       :break-before
+    "break-before-left"       :break-before
+    "break-before-right"      :break-before
+    "break-before-column"     :break-before
+    "break-inside-auto"       :break-inside
+    "break-inside-avoid"      :break-inside
+    "break-inside-avoid-page" :break-inside
+    "break-inside-avoid-column" :break-inside
+
+    "box-decoration-slice" :box-decoration
+    "box-decoration-clone" :box-decoration
 
     "pointer-events-none" :pointer-events
     "pointer-events-auto" :pointer-events
@@ -324,8 +368,10 @@
     "pr" {:group :pr}
     "pb" {:group :pb}
     "pl" {:group :pl}
-    "ps" {:group :ps}
-    "pe" {:group :pe}
+    "ps"  {:group :ps}
+    "pe"  {:group :pe}
+    "pbs" {:group :pbs}
+    "pbe" {:group :pbe}
 
     "m"   {:group :m}
     "-m"  {:group :m}
@@ -341,37 +387,55 @@
     "-mb" {:group :mb}
     "ml"  {:group :ml}
     "-ml" {:group :ml}
-    "ms"  {:group :ms}
-    "-ms" {:group :ms}
-    "me"  {:group :me}
-    "-me" {:group :me}
+    "ms"   {:group :ms}
+    "-ms"  {:group :ms}
+    "me"   {:group :me}
+    "-me"  {:group :me}
+    "mbs"  {:group :mbs}
+    "-mbs" {:group :mbs}
+    "mbe"  {:group :mbe}
+    "-mbe" {:group :mbe}
 
-    "w"     {:group :w}
-    "h"     {:group :h}
-    "min-w" {:group :min-w}
-    "min-h" {:group :min-h}
-    "max-w" {:group :max-w}
-    "max-h" {:group :max-h}
-    "size"  {:group :size}
+    "w"          {:group :w}
+    "h"          {:group :h}
+    "min-w"      {:group :min-w}
+    "min-h"      {:group :min-h}
+    "max-w"      {:group :max-w}
+    "max-h"      {:group :max-h}
+    "size"       {:group :size}
+    "inline"     {:group :inline-size}
+    "min-inline" {:group :min-inline-size}
+    "max-inline" {:group :max-inline-size}
+    "block"      {:group :block-size}
+    "min-block"  {:group :min-block-size}
+    "max-block"  {:group :max-block-size}
 
-    "inset"    {:group :inset}
-    "-inset"   {:group :inset}
-    "inset-x"  {:group :inset-x}
-    "-inset-x" {:group :inset-x}
-    "inset-y"  {:group :inset-y}
-    "-inset-y" {:group :inset-y}
-    "top"      {:group :top}
-    "-top"     {:group :top}
-    "right"    {:group :right}
-    "-right"   {:group :right}
-    "bottom"   {:group :bottom}
-    "-bottom"  {:group :bottom}
-    "left"     {:group :left}
-    "-left"    {:group :left}
-    "start"    {:group :start}
-    "-start"   {:group :start}
-    "end"      {:group :end}
-    "-end"     {:group :end}
+    "inset"     {:group :inset}
+    "-inset"    {:group :inset}
+    "inset-x"   {:group :inset-x}
+    "-inset-x"  {:group :inset-x}
+    "inset-y"   {:group :inset-y}
+    "-inset-y"  {:group :inset-y}
+    "inset-s"   {:group :start}
+    "-inset-s"  {:group :start}
+    "inset-e"   {:group :end}
+    "-inset-e"  {:group :end}
+    "inset-bs"  {:group :inset-bs}
+    "-inset-bs" {:group :inset-bs}
+    "inset-be"  {:group :inset-be}
+    "-inset-be" {:group :inset-be}
+    "top"       {:group :top}
+    "-top"      {:group :top}
+    "right"     {:group :right}
+    "-right"    {:group :right}
+    "bottom"    {:group :bottom}
+    "-bottom"   {:group :bottom}
+    "left"      {:group :left}
+    "-left"     {:group :left}
+    "start"     {:group :start}
+    "-start"    {:group :start}
+    "end"       {:group :end}
+    "-end"      {:group :end}
 
     "z"  {:group :z}
     "-z" {:group :z}
@@ -401,25 +465,29 @@
 
     "object" {:group :object-position}
 
-    "scroll-m"  {:group :scroll-m}
-    "scroll-mx" {:group :scroll-mx}
-    "scroll-my" {:group :scroll-my}
-    "scroll-ms" {:group :scroll-ms}
-    "scroll-me" {:group :scroll-me}
-    "scroll-mt" {:group :scroll-mt}
-    "scroll-mr" {:group :scroll-mr}
-    "scroll-mb" {:group :scroll-mb}
-    "scroll-ml" {:group :scroll-ml}
+    "scroll-m"   {:group :scroll-m}
+    "scroll-mx"  {:group :scroll-mx}
+    "scroll-my"  {:group :scroll-my}
+    "scroll-ms"  {:group :scroll-ms}
+    "scroll-me"  {:group :scroll-me}
+    "scroll-mbs" {:group :scroll-mbs}
+    "scroll-mbe" {:group :scroll-mbe}
+    "scroll-mt"  {:group :scroll-mt}
+    "scroll-mr"  {:group :scroll-mr}
+    "scroll-mb"  {:group :scroll-mb}
+    "scroll-ml"  {:group :scroll-ml}
 
-    "scroll-p"  {:group :scroll-p}
-    "scroll-px" {:group :scroll-px}
-    "scroll-py" {:group :scroll-py}
-    "scroll-ps" {:group :scroll-ps}
-    "scroll-pe" {:group :scroll-pe}
-    "scroll-pt" {:group :scroll-pt}
-    "scroll-pr" {:group :scroll-pr}
-    "scroll-pb" {:group :scroll-pb}
-    "scroll-pl" {:group :scroll-pl}
+    "scroll-p"   {:group :scroll-p}
+    "scroll-px"  {:group :scroll-px}
+    "scroll-py"  {:group :scroll-py}
+    "scroll-ps"  {:group :scroll-ps}
+    "scroll-pe"  {:group :scroll-pe}
+    "scroll-pbs" {:group :scroll-pbs}
+    "scroll-pbe" {:group :scroll-pbe}
+    "scroll-pt"  {:group :scroll-pt}
+    "scroll-pr"  {:group :scroll-pr}
+    "scroll-pb"  {:group :scroll-pb}
+    "scroll-pl"  {:group :scroll-pl}
 
     "accent"      {:group :accent}
     "caret"       {:validators [[:color-or-var :caret-color]]}
@@ -525,10 +593,14 @@
                              [:border-width :border-b-w]]}
     "border-l" {:validators [[:color :border-l-color]
                              [:border-width :border-l-w]]}
-    "border-s" {:validators [[:color :border-s-color]
-                             [:border-width :border-s-w]]}
-    "border-e" {:validators [[:color :border-e-color]
-                             [:border-width :border-e-w]]}
+    "border-s"  {:validators [[:color :border-s-color]
+                              [:border-width :border-s-w]]}
+    "border-e"  {:validators [[:color :border-e-color]
+                              [:border-width :border-e-w]]}
+    "border-bs" {:validators [[:color :border-bs-color]
+                              [:border-width :border-bs-w]]}
+    "border-be" {:validators [[:color :border-be-color]
+                              [:border-width :border-be-w]]}
 
     "col-span"  {:group :col-span}
     "col"       {:group :col}
@@ -572,9 +644,10 @@
     "leading"    {:group :leading}
     "tracking"   {:group :tracking}
 
-    "font"         {:validators [[:family :font-family]
-                                 [:font-weight :font-weight]]}
-    "font-stretch" {:group :font-stretch}
+    "font"          {:validators [[:family :font-family]
+                                  [:font-weight :font-weight]]}
+    "font-stretch"  {:group :font-stretch}
+    "font-features" {:group :font-features}
 
     "cursor" {:group :cursor}
     "select" {:group :select}
@@ -636,21 +709,32 @@
     "group-has" {:group :group-has}}
 
    :conflicts
-   {:p        [:px :py :pt :pr :pb :pl :ps :pe]
+   {:p        [:px :py :ps :pe :pbs :pbe :pt :pr :pb :pl]
     :px       [:pr :pl]
     :py       [:pt :pb]
-    :m        [:mx :my :mt :mr :mb :ml :ms :me]
+    :m        [:mx :my :ms :me :mbs :mbe :mt :mr :mb :ml]
     :mx       [:mr :ml]
     :my       [:mt :mb]
-    :inset    [:inset-x :inset-y :start :end :top :right :bottom :left]
+    :inset    [:inset-x :inset-y :inset-bs :inset-be :start :end :top :right :bottom :left]
     :inset-x  [:right :left :start :end]
     :inset-y  [:top :bottom]
     :size     [:w :h]
-    :gap      [:gap-x :gap-y]
-    :overflow [:overflow-x :overflow-y]
+    :gap        [:gap-x :gap-y]
+    :overflow   [:overflow-x :overflow-y]
+    :overscroll [:overscroll-x :overscroll-y]
 
-    :border-color   [:border-t-color :border-r-color :border-b-color :border-l-color
-                     :border-x-color :border-y-color :border-s-color :border-e-color]
+    :scroll-m  [:scroll-mx :scroll-my :scroll-ms :scroll-me :scroll-mbs :scroll-mbe
+                :scroll-mt :scroll-mr :scroll-mb :scroll-ml]
+    :scroll-p  [:scroll-px :scroll-py :scroll-ps :scroll-pe :scroll-pbs :scroll-pbe
+                :scroll-pt :scroll-pr :scroll-pb :scroll-pl]
+
+    :border-w       [:border-x-w :border-y-w :border-s-w :border-e-w :border-bs-w :border-be-w
+                     :border-t-w :border-r-w :border-b-w :border-l-w]
+    :border-x-w     [:border-r-w :border-l-w]
+    :border-y-w     [:border-t-w :border-b-w]
+    :border-color   [:border-x-color :border-y-color :border-s-color :border-e-color
+                     :border-bs-color :border-be-color
+                     :border-t-color :border-r-color :border-b-color :border-l-color]
     :border-x-color [:border-r-color :border-l-color]
     :border-y-color [:border-t-color :border-b-color]
 

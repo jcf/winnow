@@ -1,9 +1,9 @@
 #+title:   Supported classes
-#+date:    2026-02-14
+#+date:    2026-02-20
 #+startup: content
 
 * Overview
-Winnow recognizes *205* exact matches and *240* prefix patterns.
+Winnow recognizes *247* exact matches and *267* prefix patterns.
 
 - Exact matches: Classes like =block=, =hidden=, =flex= that match exactly
 - Prefix patterns: Patterns like =p-*=, =bg-*= that match any suffix
@@ -63,9 +63,39 @@ These classes are recognized exactly as written.
 - ~border-none~
 - ~border-solid~
 
+** Box decoration
+- ~box-decoration-clone~
+- ~box-decoration-slice~
+
 ** Box sizing
 - ~box-border~
 - ~box-content~
+
+** Break after
+- ~break-after-all~
+- ~break-after-auto~
+- ~break-after-avoid~
+- ~break-after-avoid-page~
+- ~break-after-column~
+- ~break-after-left~
+- ~break-after-page~
+- ~break-after-right~
+
+** Break before
+- ~break-before-all~
+- ~break-before-auto~
+- ~break-before-avoid~
+- ~break-before-avoid-page~
+- ~break-before-column~
+- ~break-before-left~
+- ~break-before-page~
+- ~break-before-right~
+
+** Break inside
+- ~break-inside-auto~
+- ~break-inside-avoid~
+- ~break-inside-avoid-column~
+- ~break-inside-avoid-page~
 
 ** Decoration style
 - ~decoration-dashed~
@@ -85,7 +115,17 @@ These classes are recognized exactly as written.
 - ~inline-block~
 - ~inline-flex~
 - ~inline-grid~
+- ~inline-table~
 - ~list-item~
+- ~table~
+- ~table-caption~
+- ~table-cell~
+- ~table-column~
+- ~table-column-group~
+- ~table-footer-group~
+- ~table-header-group~
+- ~table-row~
+- ~table-row-group~
 
 ** Divide style
 - ~divide-dashed~
@@ -198,6 +238,16 @@ These classes are recognized exactly as written.
 - ~overscroll-contain~
 - ~overscroll-none~
 
+** Overscroll x
+- ~overscroll-x-auto~
+- ~overscroll-x-contain~
+- ~overscroll-x-none~
+
+** Overscroll y
+- ~overscroll-y-auto~
+- ~overscroll-y-contain~
+- ~overscroll-y-none~
+
 ** Pointer events
 - ~pointer-events-auto~
 - ~pointer-events-none~
@@ -288,6 +338,12 @@ These classes are recognized exactly as written.
 - ~normal-case~
 - ~uppercase~
 
+** Text wrap
+- ~text-balance~
+- ~text-nowrap~
+- ~text-pretty~
+- ~text-wrap~
+
 ** Touch
 - ~touch-auto~
 - ~touch-manipulation~
@@ -357,11 +413,17 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~-end-*~
 - ~-hue-rotate-*~
 - ~-inset-*~
+- ~-inset-be-*~
+- ~-inset-bs-*~
+- ~-inset-e-*~
+- ~-inset-s-*~
 - ~-inset-x-*~
 - ~-inset-y-*~
 - ~-left-*~
 - ~-m-*~
 - ~-mb-*~
+- ~-mbe-*~
+- ~-mbs-*~
 - ~-me-*~
 - ~-ml-*~
 - ~-mr-*~
@@ -399,9 +461,12 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~bg-conic-*~
 - ~bg-linear-*~
 - ~bg-radial-*~
+- ~block-*~
 - ~blur-*~
 - ~border-*~
 - ~border-b-*~
+- ~border-be-*~
+- ~border-bs-*~
 - ~border-e-*~
 - ~border-l-*~
 - ~border-r-*~
@@ -440,6 +505,7 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~fill-*~
 - ~float-*~
 - ~font-*~
+- ~font-features-*~
 - ~font-stretch-*~
 - ~from-*~
 - ~gap-*~
@@ -455,8 +521,13 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~hue-rotate-*~
 - ~hyphens-*~
 - ~indent-*~
+- ~inline-*~
 - ~inset-*~
+- ~inset-be-*~
+- ~inset-bs-*~
+- ~inset-e-*~
 - ~inset-ring-*~
+- ~inset-s-*~
 - ~inset-x-*~
 - ~inset-y-*~
 - ~invert-*~
@@ -480,11 +551,17 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~mask-t-from-*~
 - ~mask-t-to-*~
 - ~mask-type-*~
+- ~max-block-*~
 - ~max-h-*~
+- ~max-inline-*~
 - ~max-w-*~
 - ~mb-*~
+- ~mbe-*~
+- ~mbs-*~
 - ~me-*~
+- ~min-block-*~
 - ~min-h-*~
+- ~min-inline-*~
 - ~min-w-*~
 - ~mix-blend-*~
 - ~ml-*~
@@ -502,6 +579,8 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~overflow-y-*~
 - ~p-*~
 - ~pb-*~
+- ~pbe-*~
+- ~pbs-*~
 - ~pe-*~
 - ~perspective-*~
 - ~perspective-origin-*~
@@ -548,6 +627,8 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~scheme-*~
 - ~scroll-m-*~
 - ~scroll-mb-*~
+- ~scroll-mbe-*~
+- ~scroll-mbs-*~
 - ~scroll-me-*~
 - ~scroll-ml-*~
 - ~scroll-mr-*~
@@ -557,6 +638,8 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~scroll-my-*~
 - ~scroll-p-*~
 - ~scroll-pb-*~
+- ~scroll-pbe-*~
+- ~scroll-pbs-*~
 - ~scroll-pe-*~
 - ~scroll-pl-*~
 - ~scroll-pr-*~
@@ -609,7 +692,10 @@ These color names are recognized in color utilities like =bg-*=, =text-*=, =bord
 - ~indigo~
 - ~inherit~
 - ~lime~
+- ~mauve~
+- ~mist~
 - ~neutral~
+- ~olive~
 - ~orange~
 - ~pink~
 - ~purple~
@@ -618,6 +704,7 @@ These color names are recognized in color utilities like =bg-*=, =text-*=, =bord
 - ~sky~
 - ~slate~
 - ~stone~
+- ~taupe~
 - ~teal~
 - ~transparent~
 - ~violet~
