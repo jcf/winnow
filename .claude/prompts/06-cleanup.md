@@ -7,9 +7,11 @@ Fix minor issues identified in code review.
 ## Issue 1: Public function should be private
 
 ### Location
+
 `config.cljc:24`
 
 ### Current
+
 ```clojure
 (defn stroke-width?
   [s]
@@ -17,6 +19,7 @@ Fix minor issues identified in code review.
 ```
 
 ### Fix
+
 ```clojure
 (defn- stroke-width?
   [s]
@@ -26,15 +29,18 @@ Fix minor issues identified in code review.
 ## Issue 2: Empty keyword set
 
 ### Location
+
 `classify.cljc:26-27`
 
 ### Current
+
 ```clojure
 (def ^:private border-width-keywords
   #{})
 ```
 
 ### Analysis
+
 The `border-width?` function works without it:
 
 ```clojure
@@ -47,6 +53,7 @@ The `border-width?` function works without it:
 ```
 
 ### Fix
+
 Remove the empty set and simplify the function:
 
 ```clojure
@@ -60,12 +67,15 @@ Remove the empty set and simplify the function:
 ## Issue 3: Add algorithm comment to sort-modifiers
 
 ### Location
+
 `api.cljc:57-73`
 
 ### Current
+
 No explanation of what the function does.
 
 ### Fix
+
 Add a docstring:
 
 ```clojure
@@ -86,21 +96,25 @@ Add a docstring:
 Check that only intended functions are public:
 
 ### winnow.api (public)
+
 - `resolve` ✓
 - `make-resolver` ✓
 - `supported-patterns` ✓
 - `normalize` ✓ (after Phase 5)
 
 ### winnow.config (internal)
+
 - `default` - currently public, should it be?
 
 ### Decision
+
 Keep `config/default` public - advanced users may want to inspect it.
 Document it as "for inspection, not modification".
 
 ## Issue 5: Review error messages
 
 ### Current precondition
+
 ```clojure
 {:pre [(vector? classes)]}
 ```
@@ -108,6 +122,7 @@ Document it as "for inspection, not modification".
 Produces: `Assert failed: (vector? classes)`
 
 ### Improvement option
+
 More descriptive assertion:
 
 ```clojure
@@ -117,6 +132,7 @@ More descriptive assertion:
 ```
 
 ### Decision
+
 Keep `:pre` - it's idiomatic. The `normalize` function provides the escape hatch.
 Document the requirement clearly in the docstring.
 

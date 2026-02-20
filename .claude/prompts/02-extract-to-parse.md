@@ -10,18 +10,21 @@ Add tests for the newly public functions.
 ### `char-at` and `str-len`
 
 Defined in both:
+
 - `parse.cljc:5-11`
 - `trie.cljc:3-9`
 
 ### `arbitrary?`
 
 Defined in both:
+
 - `config.cljc:14-18`
 - `classify.cljc:35-39`
 
 ### `content`
 
 Defined in both:
+
 - `config.cljc:20-22` (arbitrary only)
 - `classify.cljc:47-50` (arbitrary or variable)
 

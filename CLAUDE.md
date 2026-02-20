@@ -79,12 +79,12 @@ just lint              # clj-kondo
 
 ### Test Types
 
-| Type | Location | Description |
-|------|----------|-------------|
-| Unit tests | `test/winnow/*_test.cljc` | Direct API testing |
-| Conformance tests | `spec/winnow.txt` | 278 test cases from tailwind-merge |
-| Generative tests | `test/winnow/generative_test.cljc` | Property-based tests via test.check |
-| Spec tests | `test/winnow/spec_test.clj` | clojure.spec validation |
+| Type              | Location                           | Description                         |
+| ----------------- | ---------------------------------- | ----------------------------------- |
+| Unit tests        | `test/winnow/*_test.cljc`          | Direct API testing                  |
+| Conformance tests | `spec/winnow.txt`                  | 278 test cases from tailwind-merge  |
+| Generative tests  | `test/winnow/generative_test.cljc` | Property-based tests via test.check |
+| Spec tests        | `test/winnow/spec_test.clj`        | clojure.spec validation             |
 
 ### Conformance Format
 
@@ -98,6 +98,7 @@ hover:p-2 hover:p-4 → hover:p-4
 ### Hygiene Requirements
 
 Code must compile without reflection or boxed math warnings. The `just hygiene` task checks this. Common fixes:
+
 - Add `^String` type hints for string operations
 - Use `(long x)` to avoid boxed math in loops
 - Use reader conditionals (`#?(:clj ...)`) for Java interop
@@ -172,10 +173,10 @@ This runs `clojure -M:dev -m winnow.doc` which generates `doc/supported-classes.
 
 Winnow intentionally diverges from tailwind-merge in how it handles unknown classes:
 
-| Input | tailwind-merge | winnow |
-|-------|----------------|--------|
+| Input                   | tailwind-merge | winnow                  |
+| ----------------------- | -------------- | ----------------------- |
 | `text-4xl text-primary` | `text-primary` | `text-4xl text-primary` |
-| `bg-red-500 bg-brand` | `bg-brand` | `bg-red-500 bg-brand` |
+| `bg-red-500 bg-brand`   | `bg-brand`     | `bg-red-500 bg-brand`   |
 
 tailwind-merge assumes unknown values are colors. Winnow requires explicit configuration:
 
@@ -196,6 +197,7 @@ tailwind-merge assumes unknown values are colors. Winnow requires explicit confi
 ```
 
 This is safer for:
+
 - Projects using multiple CSS frameworks
 - Custom design systems with non-Tailwind naming
 - Catching typos (misspelled classes pass through rather than silently conflicting)

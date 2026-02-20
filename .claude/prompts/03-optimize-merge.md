@@ -74,13 +74,13 @@ Refactor `merge-classes` to be more idiomatic using `reduce` with `rseq`.
 
 ## Changes
 
-| Before | After | Reason |
-|--------|-------|--------|
-| `loop` with index | `reduce` | More idiomatic |
-| `(nth processed i)` | destructuring | Clearer |
-| Nested `if` | `cond` | Readable |
-| `(into [...] extra)` | `concat` | Lazy, no intermediate |
-| Manual `(dec i)` | `rseq` | Built-in reverse |
+| Before               | After         | Reason                |
+| -------------------- | ------------- | --------------------- |
+| `loop` with index    | `reduce`      | More idiomatic        |
+| `(nth processed i)`  | destructuring | Clearer               |
+| Nested `if`          | `cond`        | Readable              |
+| `(into [...] extra)` | `concat`      | Lazy, no intermediate |
+| Manual `(dec i)`     | `rseq`        | Built-in reverse      |
 
 ## Alternative: Keep Loop
 

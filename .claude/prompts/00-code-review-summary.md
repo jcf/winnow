@@ -9,24 +9,24 @@ well-structured with clear separation of concerns.
 
 ### High Priority
 
-| Issue | Location | Description |
-|-------|----------|-------------|
-| Duplicate functions | parse.cljc, trie.cljc, classify.cljc, config.cljc | `char-at`, `str-len`, `arbitrary?`, `content` defined multiple times |
-| Public function should be private | config.cljc:24 | `stroke-width?` is public but internal |
+| Issue                             | Location                                          | Description                                                          |
+| --------------------------------- | ------------------------------------------------- | -------------------------------------------------------------------- |
+| Duplicate functions               | parse.cljc, trie.cljc, classify.cljc, config.cljc | `char-at`, `str-len`, `arbitrary?`, `content` defined multiple times |
+| Public function should be private | config.cljc:24                                    | `stroke-width?` is public but internal                               |
 
 ### Medium Priority
 
-| Issue | Location | Description |
-|-------|----------|-------------|
-| Inefficient merge loop | api.cljc:118-140 | Uses explicit indexing; `reduce` with `rseq` more idiomatic |
-| Hardcoded postfix conflicts | api.cljc:84-87 | `:text-size`/`:leading` relationship hardcoded |
+| Issue                       | Location         | Description                                                 |
+| --------------------------- | ---------------- | ----------------------------------------------------------- |
+| Inefficient merge loop      | api.cljc:118-140 | Uses explicit indexing; `reduce` with `rseq` more idiomatic |
+| Hardcoded postfix conflicts | api.cljc:84-87   | `:text-size`/`:leading` relationship hardcoded              |
 
 ### Low Priority
 
-| Issue | Location | Description |
-|-------|----------|-------------|
-| Empty keyword set | classify.cljc:26-27 | `border-width-keywords` is `#{}` |
-| Input normalization | api.cljc | No lenient input handling for convenience |
+| Issue               | Location            | Description                               |
+| ------------------- | ------------------- | ----------------------------------------- |
+| Empty keyword set   | classify.cljc:26-27 | `border-width-keywords` is `#{}`          |
+| Input normalization | api.cljc            | No lenient input handling for convenience |
 
 ## Phases
 

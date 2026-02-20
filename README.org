@@ -39,7 +39,7 @@ Unknown classes pass through unchanged:
 - *Strict* — Requires explicit configuration. Won't guess that =bg-brand= is a
   color unless you tell it.
 - *Stable* — API designed for production. Breaking changes are versioned.
-- *Tested* — 257 conformance tests, generative property tests, clojure.spec
+- *Tested* — 340 conformance tests, generative property tests, clojure.spec
   validation.
 - *Fast* — Sub-microsecond for typical inputs. Benchmarked with Criterium.
 - *Pure Clojure* — No JavaScript runtime. No external dependencies.
@@ -87,12 +87,12 @@ Requires a vector. Use =normalize= for flexible input.
 #+end_src
 
 * Conformance
-257 test cases derived from [[https://github.com/dcastil/tailwind-merge][tailwind-merge]].
+340 test cases derived from [[https://github.com/dcastil/tailwind-merge][tailwind-merge]].
 
 | Library            | Tailwind | Conformance |
 |--------------------+----------+-------------|
-| winnow             | v4.1     |     257/257 |
-| tailwind-merge-clj | v3.4     |     218/257 |
+| winnow             | v4.x     |     340/340 |
+| tailwind-merge-clj | v3.4     |     218/340 |
 
 * Performance
 Apple M4, =just bench=:
@@ -104,7 +104,10 @@ Apple M4, =just bench=:
 | Large        |      25 | 12.5 µs |
 
 * Coverage
-445 patterns. Tailwind 4.1. See [[file:doc/supported-classes.org][supported-classes.org]].
+666 patterns. Tailwind 4.x. See [[file:doc/supported-classes.org][supported-classes.org]].
+
+Automated upstream detection runs daily via GitHub Actions to detect new
+utilities added to Tailwind CSS.
 
 * Platforms
 | Platform      | Status |
@@ -115,9 +118,11 @@ Apple M4, =just bench=:
 
 * Development
 #+begin_src sh
-just          # Full test suite (required before commits)
-just bench    # Run benchmarks
-just docs     # Regenerate supported-classes.org
+just               # Full test suite (required before commits)
+just bench         # Run benchmarks
+just docs          # Regenerate supported-classes.org
+just upstream-check  # Check for upstream Tailwind changes
+just upstream-update # Update baseline from Tailwind CSS
 #+end_src
 
 * License

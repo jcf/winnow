@@ -3,7 +3,7 @@
 #+startup: content
 
 * Overview
-Winnow recognizes *247* exact matches and *267* prefix patterns.
+Winnow recognizes *328* exact matches and *307* prefix patterns.
 
 - Exact matches: Classes like =block=, =hidden=, =flex= that match exactly
 - Prefix patterns: Patterns like =p-*=, =bg-*= that match any suffix
@@ -14,6 +14,9 @@ These classes are recognized exactly as written.
 ** Appearance
 - ~appearance-auto~
 - ~appearance-none~
+
+** Backdrop filter
+- ~backdrop-filter~
 
 ** Backface
 - ~backface-hidden~
@@ -37,6 +40,17 @@ These classes are recognized exactly as written.
 - ~bg-origin-border~
 - ~bg-origin-content~
 - ~bg-origin-padding~
+
+** Bg position
+- ~bg-bottom~
+- ~bg-bottom-left~
+- ~bg-bottom-right~
+- ~bg-center~
+- ~bg-left~
+- ~bg-right~
+- ~bg-top~
+- ~bg-top-left~
+- ~bg-top-right~
 
 ** Bg repeat
 - ~bg-no-repeat~
@@ -97,12 +111,29 @@ These classes are recognized exactly as written.
 - ~break-inside-avoid-column~
 - ~break-inside-avoid-page~
 
+** Contain
+- ~contain-content~
+- ~contain-inline-size~
+- ~contain-layout~
+- ~contain-none~
+- ~contain-paint~
+- ~contain-size~
+- ~contain-strict~
+- ~contain-style~
+
+** Container
+- ~container~
+
 ** Decoration style
 - ~decoration-dashed~
 - ~decoration-dotted~
 - ~decoration-double~
 - ~decoration-solid~
 - ~decoration-wavy~
+
+** Decoration thickness
+- ~decoration-auto~
+- ~decoration-from-font~
 
 ** Display
 - ~block~
@@ -133,6 +164,12 @@ These classes are recognized exactly as written.
 - ~divide-double~
 - ~divide-none~
 - ~divide-solid~
+
+** Fill
+- ~fill-none~
+
+** Filter
+- ~filter~
 
 ** Flex
 - ~flex-1~
@@ -184,6 +221,9 @@ These classes are recognized exactly as written.
 - ~proportional-nums~
 - ~tabular-nums~
 
+** Gradient via
+- ~via-none~
+
 ** Grid flow
 - ~grid-flow-col~
 - ~grid-flow-col-dense~
@@ -213,11 +253,64 @@ These classes are recognized exactly as written.
 - ~list-disc~
 - ~list-none~
 
+** Mask
+- ~mask-none~
+
+** Mask clip
+- ~mask-clip-border~
+- ~mask-clip-content~
+- ~mask-clip-fill~
+- ~mask-clip-padding~
+- ~mask-clip-stroke~
+- ~mask-clip-view~
+- ~mask-no-clip~
+
 ** Mask composite
 - ~mask-add~
 - ~mask-exclude~
 - ~mask-intersect~
 - ~mask-subtract~
+
+** Mask mode
+- ~mask-alpha~
+- ~mask-luminance~
+- ~mask-match~
+
+** Mask origin
+- ~mask-origin-border~
+- ~mask-origin-content~
+- ~mask-origin-fill~
+- ~mask-origin-padding~
+- ~mask-origin-stroke~
+- ~mask-origin-view~
+
+** Mask position
+- ~mask-bottom~
+- ~mask-bottom-left~
+- ~mask-bottom-right~
+- ~mask-center~
+- ~mask-left~
+- ~mask-right~
+- ~mask-top~
+- ~mask-top-left~
+- ~mask-top-right~
+
+** Mask repeat
+- ~mask-no-repeat~
+- ~mask-repeat~
+- ~mask-repeat-round~
+- ~mask-repeat-space~
+- ~mask-repeat-x~
+- ~mask-repeat-y~
+
+** Mask shape
+- ~mask-circle~
+- ~mask-ellipse~
+
+** Mask size
+- ~mask-auto~
+- ~mask-contain~
+- ~mask-cover~
 
 ** Object fit
 - ~object-contain~
@@ -225,6 +318,14 @@ These classes are recognized exactly as written.
 - ~object-fill~
 - ~object-none~
 - ~object-scale-down~
+
+** Outline style
+- ~outline-dashed~
+- ~outline-dotted~
+- ~outline-double~
+- ~outline-hidden~
+- ~outline-none~
+- ~outline-solid~
 
 ** Overflow
 - ~overflow-auto~
@@ -267,6 +368,7 @@ These classes are recognized exactly as written.
 
 ** Ring w
 - ~ring~
+- ~ring-inset~
 
 ** Rotate
 - ~rotate-none~
@@ -304,6 +406,9 @@ These classes are recognized exactly as written.
 ** Sr
 - ~not-sr-only~
 - ~sr-only~
+
+** Stroke color
+- ~stroke-none~
 
 ** Table layout
 - ~table-auto~
@@ -362,6 +467,18 @@ These classes are recognized exactly as written.
 ** Touch pz
 - ~touch-pinch-zoom~
 
+** Transform
+- ~transform-cpu~
+- ~transform-gpu~
+- ~transform-none~
+
+** Transform box
+- ~transform-border~
+- ~transform-content~
+- ~transform-fill~
+- ~transform-stroke~
+- ~transform-view~
+
 ** Transform style
 - ~transform-3d~
 - ~transform-flat~
@@ -378,6 +495,12 @@ These classes are recognized exactly as written.
 ** Transition behavior
 - ~transition-discrete~
 - ~transition-normal~
+
+** Translate
+- ~-translate-full~
+- ~translate-3d~
+- ~translate-full~
+- ~translate-none~
 
 ** Vertical align
 - ~align-baseline~
@@ -409,6 +532,8 @@ These classes are recognized exactly as written.
 * Prefix Patterns
 These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px=, =p-[10px]=.
 
+- ~-bg-conic-*~
+- ~-bg-linear-*~
 - ~-bottom-*~
 - ~-end-*~
 - ~-hue-rotate-*~
@@ -434,15 +559,38 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~-order-*~
 - ~-right-*~
 - ~-rotate-*~
+- ~-rotate-x-*~
+- ~-rotate-y-*~
+- ~-rotate-z-*~
+- ~-scale-*~
+- ~-scale-x-*~
+- ~-scale-y-*~
+- ~-scale-z-*~
+- ~-scroll-m-*~
+- ~-scroll-mb-*~
+- ~-scroll-mbe-*~
+- ~-scroll-mbs-*~
+- ~-scroll-me-*~
+- ~-scroll-ml-*~
+- ~-scroll-mr-*~
+- ~-scroll-ms-*~
+- ~-scroll-mt-*~
+- ~-scroll-mx-*~
+- ~-scroll-my-*~
+- ~-skew-*~
 - ~-skew-x-*~
 - ~-skew-y-*~
+- ~-space-x-*~
+- ~-space-y-*~
 - ~-start-*~
 - ~-top-*~
+- ~-translate-*~
 - ~-translate-x-*~
 - ~-translate-y-*~
 - ~-translate-z-*~
 - ~-z-*~
 - ~accent-*~
+- ~align-*~
 - ~animate-*~
 - ~aspect-*~
 - ~auto-cols-*~
@@ -460,7 +608,9 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~bg-*~
 - ~bg-conic-*~
 - ~bg-linear-*~
+- ~bg-position-*~
 - ~bg-radial-*~
+- ~bg-size-*~
 - ~block-*~
 - ~blur-*~
 - ~border-*~
@@ -487,6 +637,7 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~col-span-*~
 - ~col-start-*~
 - ~columns-*~
+- ~contain-*~
 - ~content-*~
 - ~contrast-*~
 - ~cursor-*~
@@ -536,18 +687,22 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~leading-*~
 - ~left-*~
 - ~line-clamp-*~
+- ~list-*~
 - ~list-image-*~
 - ~m-*~
+- ~mask-*~
 - ~mask-b-from-*~
 - ~mask-b-to-*~
 - ~mask-l-from-*~
 - ~mask-l-to-*~
+- ~mask-position-*~
 - ~mask-r-from-*~
 - ~mask-r-to-*~
 - ~mask-radial-*~
 - ~mask-radial-at-*~
 - ~mask-radial-from-*~
 - ~mask-radial-to-*~
+- ~mask-size-*~
 - ~mask-t-from-*~
 - ~mask-t-to-*~
 - ~mask-type-*~
@@ -573,7 +728,9 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~object-*~
 - ~opacity-*~
 - ~order-*~
+- ~origin-*~
 - ~outline-*~
+- ~outline-offset-*~
 - ~overflow-*~
 - ~overflow-x-*~
 - ~overflow-y-*~
@@ -596,6 +753,7 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~py-*~
 - ~right-*~
 - ~ring-*~
+- ~ring-offset-*~
 - ~rotate-*~
 - ~rotate-x-*~
 - ~rotate-y-*~
@@ -653,6 +811,7 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~shadow-*~
 - ~shrink-*~
 - ~size-*~
+- ~skew-*~
 - ~skew-x-*~
 - ~skew-y-*~
 - ~space-x-*~
@@ -666,7 +825,10 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~to-*~
 - ~top-*~
 - ~tracking-*~
+- ~transform-*~
 - ~transform-origin-*~
+- ~transition-*~
+- ~translate-*~
 - ~translate-x-*~
 - ~translate-y-*~
 - ~translate-z-*~
@@ -674,6 +836,7 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~via-*~
 - ~w-*~
 - ~whitespace-*~
+- ~will-change-*~
 - ~wrap-*~
 - ~z-*~
 
