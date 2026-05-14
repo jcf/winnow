@@ -1535,3 +1535,36 @@ bg-mauve-500 bg-olive-500
 
 text-mist-100 text-taupe-200
 => text-taupe-200
+
+# Scrollbar utilities (v4.2)
+
+scrollbar-auto scrollbar-thin
+=> scrollbar-thin
+
+scrollbar-none scrollbar-auto
+=> scrollbar-auto
+
+scrollbar-gutter-auto scrollbar-gutter-stable
+=> scrollbar-gutter-stable
+
+scrollbar-gutter-stable scrollbar-gutter-both
+=> scrollbar-gutter-both
+
+scrollbar-thumb-red-500 scrollbar-thumb-blue-500
+=> scrollbar-thumb-blue-500
+
+scrollbar-track-gray-100 scrollbar-track-slate-200
+=> scrollbar-track-slate-200
+
+scrollbar-thumb-red-500 scrollbar-track-gray-100
+=> scrollbar-thumb-red-500 scrollbar-track-gray-100
+
+# Tab size (v4.2)
+
+tab-4 tab-8
+=> tab-8
+
+# Zoom (v4.2)
+
+zoom-50 zoom-100
+=> zoom-100

@@ -1,9 +1,9 @@
 #+title:   Supported classes
-#+date:    2026-02-20
+#+date:    2026-05-14
 #+startup: content
 
 * Overview
-Winnow recognizes *328* exact matches and *307* prefix patterns.
+Winnow recognizes *334* exact matches and *311* prefix patterns.
 
 - Exact matches: Classes like =block=, =hidden=, =flex= that match exactly
 - Prefix patterns: Patterns like =p-*=, =bg-*= that match any suffix
@@ -376,6 +376,16 @@ These classes are recognized exactly as written.
 ** Scroll behavior
 - ~scroll-auto~
 - ~scroll-smooth~
+
+** Scrollbar gutter
+- ~scrollbar-gutter-auto~
+- ~scrollbar-gutter-both~
+- ~scrollbar-gutter-stable~
+
+** Scrollbar width
+- ~scrollbar-auto~
+- ~scrollbar-none~
+- ~scrollbar-thin~
 
 ** Shadow
 - ~shadow~
@@ -805,6 +815,8 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~scroll-pt-*~
 - ~scroll-px-*~
 - ~scroll-py-*~
+- ~scrollbar-thumb-*~
+- ~scrollbar-track-*~
 - ~select-*~
 - ~self-*~
 - ~sepia-*~
@@ -820,6 +832,7 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~space-y-reverse-*~
 - ~start-*~
 - ~stroke-*~
+- ~tab-*~
 - ~text-*~
 - ~text-shadow-*~
 - ~to-*~
@@ -839,6 +852,7 @@ These patterns match =<prefix>-<value>=. For example, =p-*= matches =p-4=, =p-px
 - ~will-change-*~
 - ~wrap-*~
 - ~z-*~
+- ~zoom-*~
 
 * Colors
 These color names are recognized in color utilities like =bg-*=, =text-*=, =border-*=.

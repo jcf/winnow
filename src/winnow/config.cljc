@@ -446,7 +446,15 @@
     "decoration-auto"      :decoration-thickness
     "decoration-from-font" :decoration-thickness
 
-    "inert" :inert}
+    "inert" :inert
+
+    "scrollbar-auto" :scrollbar-width
+    "scrollbar-none" :scrollbar-width
+    "scrollbar-thin" :scrollbar-width
+
+    "scrollbar-gutter-auto"   :scrollbar-gutter
+    "scrollbar-gutter-stable" :scrollbar-gutter
+    "scrollbar-gutter-both"   :scrollbar-gutter}
 
    :prefixes
    {"p"  {:group :p}
@@ -835,7 +843,13 @@
     "mask-radial-to"   {:group :mask-radial-to}
 
     "has"       {:group :has}
-    "group-has" {:group :group-has}}
+    "group-has" {:group :group-has}
+
+    "scrollbar-thumb" {:validators [[:color-or-var :scrollbar-thumb]]}
+    "scrollbar-track" {:validators [[:color-or-var :scrollbar-track]]}
+
+    "tab"  {:group :tab}
+    "zoom" {:group :zoom}}
 
    :conflicts
    {:p        [:px :py :ps :pe :pbs :pbe :pt :pr :pb :pl]
