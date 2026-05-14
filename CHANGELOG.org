@@ -1,5 +1,13 @@
 #+title: Changelog
 
+* v1.2.0 (2026-05-14)
+** Added
+- Scrollbar width utilities: =scrollbar-auto=, =scrollbar-none=, =scrollbar-thin=
+- Scrollbar gutter utilities: =scrollbar-gutter-auto=, =scrollbar-gutter-stable=, =scrollbar-gutter-both=
+- Scrollbar color utilities: =scrollbar-thumb-*=, =scrollbar-track-*=
+- Tab size utility: =tab-*=
+- Zoom utility: =zoom-*=
+
 * v1.1.0 (2026-02-20)
 ** Added
 - 25 new utilities for 99.9% upstream Tailwind coverage (666 patterns total)
