@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  packages: read
+
+env:
+  CI: true
+  IMAGE: code.invetica.team/jcf/bits-ci:20260226-bc992f8
+  TERM: xterm
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: nixos
+    container:
+      image: ${{ env.IMAGE }}
+      credentials:
+        username: jcf
+        password: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Lint
+        run: just lint
+
+  test:
+    name: Test
+    runs-on: nixos
+    container:
+      image: ${{ env.IMAGE }}
+      credentials:
+        username: jcf
+        password: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+          key: deps-${{ hashFiles('deps.edn') }}
+          restore-keys: deps-
+
+      - name: Test
+        run: just test
+
+  hygiene:
+    name: Hygiene
+    runs-on: nixos
+    container:
+      image: ${{ env.IMAGE }}
+      credentials:
+        username: jcf
+        password: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+          key: deps-${{ hashFiles('deps.edn') }}
+          restore-keys: deps-
+
+      - name: Check reflection and boxing
+        run: just hygiene
+
+  test-bb:
+    name: Test (Babashka)
+    runs-on: nixos
+    steps:
+      - uses: actions/checkout@v4
+
+      # The bits-ci image has no Babashka, so run on the host where the
+      # nix store caches the closure across runs.
+      - name: Run Babashka tests
+        run: >-
+          nix shell nixpkgs#babashka nixpkgs#temurin-bin-25 --command
+          bb -m cognitect.test-runner/-main -d test
+          -n winnow.api-test -n winnow.parse-test
+
+  test-cljs:
+    name: Test (ClojureScript)
+    runs-on: nixos
+    container:
+      image: ${{ env.IMAGE }}
+      credentials:
+        username: jcf
+        password: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+          key: deps-${{ hashFiles('deps.edn') }}
+          restore-keys: deps-
+
+      - name: Run ClojureScript tests
+        run: just test-cljs
