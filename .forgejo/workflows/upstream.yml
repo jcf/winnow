@@ -1,0 +1,38 @@
+name: Upstream
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+env:
+  CI: true
+  IMAGE: code.invetica.team/jcf/bits-ci:20260226-bc992f8
+  TERM: xterm
+
+permissions:
+  packages: read
+
+jobs:
+  check:
+    name: Check
+    runs-on: nixos
+    container:
+      image: ${{ env.IMAGE }}
+      credentials:
+        username: jcf
+        password: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore deps
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.gitlibs
+          key: deps-${{ hashFiles('deps.edn') }}
+          restore-keys: deps-
+
+      - name: Check upstream
+        run: just upstream-check
